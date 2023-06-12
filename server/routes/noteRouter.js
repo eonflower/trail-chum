@@ -1,5 +1,3 @@
-
-
 const express = require("express");
 const noteRouter = express.Router();
 const Note = require("../models/Note");
@@ -7,7 +5,7 @@ const Trail = require("../models/Trail")
 
 // Get All notes
 noteRouter.get("/", (req, res, next) => {
-  Note.find((err, notes) => {
+  Note.find({ user: req.auth._id }, (err, notes) => { // Filter notes by user
     if (err) {
       res.status(500);
       return next(err);
@@ -18,7 +16,7 @@ noteRouter.get("/", (req, res, next) => {
 
 // Get notes by trail id
 noteRouter.get("/trail/:id", (req, res, next) => {
-  Note.find({ trail: req.params.id }, (err, notes) => {
+  Note.find({ trail: req.params.id, user: req.auth._id }, (err, notes) => { // Filter notes by trail and user
     if (err) {
       res.status(500);
       return next(err);
@@ -28,17 +26,18 @@ noteRouter.get("/trail/:id", (req, res, next) => {
 });
 
 // Get notes by id
-noteRouter.get("/:id", async (req, res, next) => {
-  try {
-    const notes = await Note.findById(req.params.id);
-    if (!notes) {
-    return res.status(404).send("Note not found"); 
-    } 
-    return res.status(200).send(notes);
-  } catch (err) {
-    res.status(500);
-    return next(err);
-  }
+noteRouter.get('/:id', (req, res, next) => {
+  Note.findOne({ _id: req.params.id, user: req.auth._id }, (err, note) => {
+    if (err) {
+      res.status(500);
+      return next(err);
+    }
+    if (!note) {
+      res.status(404);
+      return next(new Error('Note not found'));
+    }
+    return res.status(200).send(note);
+  });
 });
 
 // Add new note
@@ -66,17 +65,21 @@ noteRouter.post('/', (req, res, next) => {
 });
 
 // Update Note
-noteRouter.put("/:id", (req, res, next) => {
+noteRouter.put('/:id', (req, res, next) => {
   Note.findOneAndUpdate(
     { _id: req.params.id, user: req.auth._id },
     req.body,
     { new: true },
-    (err, updatedNote) => {
+    (err, note) => {
       if (err) {
         res.status(500);
         return next(err);
       }
-      return res.status(201).send(updatedNote);
+      if (!note) {
+        res.status(404);
+        return next(new Error('Note not found'));
+      }
+      return res.status(200).send(note);
     }
   );
 });

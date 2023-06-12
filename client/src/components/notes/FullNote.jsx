@@ -1,255 +1,3 @@
-// import React, { useContext } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom/';
-// import { UserContext } from '../../context/UserProvider';
-
-// export default function FullNote(props) {
-// 	const { deleteNote } = useContext(UserContext)
-// 	const { id } = useParams()
-// 	const navigate = useNavigate();
-// 	const { 
-// 		description, 
-// 		trailName, 
-// 		trailDirection, 
-// 		startLocation, 
-// 		endLocation, 
-// 		startMileMark, 
-// 		endMileMark
-// 		} = props;
-	
-// 	const handleDelete = () => {
-//     deleteNote(id)
-// 		.then(() => {
-// 			navigate('/home'); // Redirect to the home page after successful deletion
-// 			window.location.reload();
-// 		})
-// 		.catch((error) => {
-// 			console.error(error);
-// 		});
-//   };
-
-// 	const calculateMileage = () => {
-//     const startMile = parseFloat(startMileMark);
-//     const endMile = parseFloat(endMileMark);
-//     if (!isNaN(startMile) && !isNaN(endMile)) {
-//       const distance = Math.abs(endMile - startMile).toFixed(2);
-//       return distance !== '0.00' ? `${distance} miles` : '';
-//     }
-//     return '';
-//   };
-// 	const mileage = calculateMileage();
-
-// 	const handleEdit = () => {
-//     navigate(`/edit-note/${id}`); // Redirect to the edit note page
-//   };
-
-
-//   return (
-//     <div>
-// 			<span className='solo-span'>
-// 				<h3 className='log-day'>{trailName}</h3>
-// 				<p className='bullet'>|</p>
-// 				<h3 className='log-mileage'>{mileage === "" ? "0 miles" : mileage}</h3>
-// 				<p className='bullet'>|</p>
-// 				<h3 className='log-direction'>{trailDirection}</h3>
-// 			</span>
-// 			<span className='log-location'>
-// 				<h4>{startLocation} {startLocation ? "-" : ""} {endLocation}</h4>
-// 			</span>
-//       <p className='log-description'>{description}</p>
-// 			<div className='button-container'>
-// 			<button className='log-edit' onClick={() => handleEdit(id)}>
-//           Edit
-//         </button>
-// 			<button className='log-delete' onClick={() => handleDelete(id)}>
-// 				delete
-// 			</button>
-// 			</div>
-//     </div>
-//   );
-// }
-
-// import React, { useContext, useState } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom/';
-// import { UserContext } from '../../context/UserProvider';
-// import NoteForm from './NoteForm';
-
-// export default function FullNote(props) {
-//   const { deleteNote } = useContext(UserContext);
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-//   const {
-//     description,
-//     trailName,
-//     trailDirection,
-//     startLocation,
-//     endLocation,
-//     startMileMark,
-//     endMileMark
-//   } = props;
-
-//   const [isEditMode, setIsEditMode] = useState(false);
-
-// 	const [formData, setFormData] = useState({
-//     trail: '',
-//     dayNumber: '',
-//     date: '',
-//     trailDirection: '',
-//     startLocation: '',
-//     startMileMark: '',
-//     endLocation: '',
-//     endMileMark: '',
-//     description: ''
-//   });
-
-//   const handleDelete = () => {
-//     deleteNote(id)
-//       .then(() => {
-//         navigate('/home'); // Redirect to the home page after successful deletion
-//         window.location.reload();
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       });
-//   };
-
-//   const calculateMileage = () => {
-//     const startMile = parseFloat(startMileMark);
-//     const endMile = parseFloat(endMileMark);
-//     if (!isNaN(startMile) && !isNaN(endMile)) {
-//       const distance = Math.abs(endMile - startMile).toFixed(2);
-//       return distance !== '0.00' ? `${distance} miles` : '';
-//     }
-//     return '';
-//   };
-//   const mileage = calculateMileage();
-
-//   const handleEdit = () => {
-//     setIsEditMode(true);
-//   };
-
-//   return (
-//     <div>
-//       {isEditMode ? (
-//         <NoteForm noteId={id} formData={formData} setFormData={setFormData} />
-//       ) : (
-//         <>
-//           <span className='solo-span'>
-//             <h3 className='log-day'>{trailName}</h3>
-//             <p className='bullet'>|</p>
-//             <h3 className='log-mileage'>{mileage === '' ? '0 miles' : mileage}</h3>
-//             <p className='bullet'>|</p>
-//             <h3 className='log-direction'>{trailDirection}</h3>
-//           </span>
-//           <span className='log-location'>
-//             <h4>
-//               {startLocation} {startLocation ? '-' : ''} {endLocation}
-//             </h4>
-//           </span>
-//           <p className='log-description'>{description}</p>
-//           <div className='button-container'>
-//             <button className='log-edit' onClick={handleEdit}>
-//               Edit
-//             </button>
-//             <button className='log-delete' onClick={() => handleDelete(id)}>
-//               Delete
-//             </button>
-//           </div>
-//         </>
-//       )}
-//     </div>
-//   );
-// }
-
-// import React, { useContext, useState } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom/';
-// import { UserContext } from '../../context/UserProvider';
-// import NoteForm from './NoteForm';
-
-// export default function FullNote(props) {
-//   const { deleteNote } = useContext(UserContext);
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-//   const {
-//     description,
-//     trailName,
-//     trailDirection,
-//     startLocation,
-//     endLocation,
-//     startMileMark,
-//     endMileMark
-//   } = props;
-
-//   const [isEditMode, setIsEditMode] = useState(false);
-
-//   const handleDelete = () => {
-//     deleteNote(id)
-//       .then(() => {
-//         navigate('/home'); // Redirect to the home page after successful deletion
-//         window.location.reload();
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       });
-//   };
-
-//   const calculateMileage = () => {
-//     const startMile = parseFloat(startMileMark);
-//     const endMile = parseFloat(endMileMark);
-//     if (!isNaN(startMile) && !isNaN(endMile)) {
-//       const distance = Math.abs(endMile - startMile).toFixed(2);
-//       return distance !== '0.00' ? `${distance} miles` : '';
-//     }
-//     return '';
-//   };
-//   const mileage = calculateMileage();
-
-//   const handleEdit = () => {
-//     setIsEditMode(true);
-//   };
-
-//   return (
-//     <div>
-//       {isEditMode ? (
-//         <NoteForm
-//           noteId={id}
-//           initialValues={{
-//             trailName,
-//             trailDirection,
-//             startLocation,
-//             endLocation,
-//             startMileMark,
-//             endMileMark,
-//             description
-//           }}
-//         />
-//       ) : (
-//         <>
-//           <span className='solo-span'>
-//             <h3 className='log-day'>{trailName}</h3>
-//             <p className='bullet'>|</p>
-//             <h3 className='log-mileage'>{mileage === '' ? '0 miles' : mileage}</h3>
-//             <p className='bullet'>|</p>
-//             <h3 className='log-direction'>{trailDirection}</h3>
-//           </span>
-//           <span className='log-location'>
-//             <h4>
-//               {startLocation} {startLocation ? '-' : ''} {endLocation}
-//             </h4>
-//           </span>
-//           <p className='log-description'>{description}</p>
-//           <div className='button-container'>
-//             <button className='log-edit' onClick={handleEdit}>
-//               Edit
-//             </button>
-//             <button className='log-delete' onClick={() => handleDelete(id)}>
-//               Delete
-//             </button>
-//           </div>
-//         </>
-//       )}
-//     </div>
-//   );
-// }
 
 import React, { useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -257,7 +5,7 @@ import { UserContext } from '../../context/UserProvider';
 import NoteForm from './NoteForm';
 
 export default function FullNote(props) {
-  const { deleteNote } = useContext(UserContext);
+  const { deleteNote, updateNote } = useContext(UserContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const {
@@ -297,6 +45,7 @@ export default function FullNote(props) {
   const handleEdit = () => {
     setIsEditMode(true);
   };
+	
 
   return (
     <div>
@@ -304,7 +53,6 @@ export default function FullNote(props) {
         <NoteForm
           noteId={id}
           formData={props}
-          setFormData={props.setFormData}
           setIsEditMode={setIsEditMode}
         />
       ) : (
@@ -323,7 +71,7 @@ export default function FullNote(props) {
           </span>
           <p className='log-description'>{description}</p>
           <div className='button-container'>
-            <button className='log-edit' onClick={handleEdit}>
+            <button className='log-edit' onClick={() => handleEdit(id)}>
               Edit
             </button>
             <button className='log-delete' onClick={() => handleDelete(id)}>

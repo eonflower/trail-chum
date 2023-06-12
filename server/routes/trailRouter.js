@@ -4,8 +4,8 @@ const Trail = require("../models/Trail");
 const Note = require("../models/Note")
 
 // Get All Trails
-trailRouter.get("/", (req, res, next) => {
-  Trail.find((err, trails) => {
+trailRouter.get('/user', (req, res, next) => {
+  Trail.find({ user: req.auth._id }, (err, trails) => {
     if (err) {
       res.status(500);
       return next(err);
@@ -15,17 +15,18 @@ trailRouter.get("/", (req, res, next) => {
 });
 
 // Get Trails by id
-trailRouter.get("/:id", async (req, res, next) => {
-  try {
-    const trail = await Trail.findById(req.params.id);
+trailRouter.get('/:id', (req, res, next) => {
+  Trail.findOne({ _id: req.params.id, user: req.auth._id }, (err, trail) => {
+    if (err) {
+      res.status(500);
+      return next(err);
+    }
     if (!trail) {
-      return res.status(404).send("Trail not found");
+      res.status(404);
+      return next(new Error('Trail not found'));
     }
     return res.status(200).send(trail);
-  } catch (err) {
-    res.status(500);
-    return next(err);
-  }
+  });
 });
 
 // Get Trail Notes by trail id

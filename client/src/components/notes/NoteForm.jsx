@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../../context/UserProvider';
 
-export default function NoteForm() {
-  const { noteId } = useParams();
+export default function NoteForm({ noteId }) {
+  const { trail: trailId } = useParams();
   const { addNote, deleteNote, updateNote, trails, notes } = useContext(UserContext);
   const initInputs = {
     dayNumber: '',
     date: '',
-    trail: '',
+    trail: trailId || '',
 		trailName: '',
     trailDirection: 'NOBO',
     startLocation: '',
@@ -21,6 +21,28 @@ export default function NoteForm() {
   const [inputs, setInputs] = useState(initInputs);
 	const [isEditMode, setIsEditMode] = useState(false);
 
+	// useEffect(() => {
+  //   if (noteId) {
+  //     const note = notes.find((note) => note._id === noteId);
+  //     if (note) {
+  //       setInputs(note);
+  //     }
+  //   }
+  // }, [noteId, notes]);
+
+	useEffect(() => {
+		if (noteId) {
+			const note = notes.find((note) => note._id === noteId);
+			if (note) {
+				setInputs((prevInputs) => ({
+					...prevInputs,
+					...note, // Include all existing note properties
+					trail: note.trail, // Update the trail value separately
+				}));
+			}
+		}
+	}, [noteId, notes]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +53,27 @@ export default function NoteForm() {
   };
 
 
-  const handleSubmit = (e) => {
+
+
+  // const handleSubmit = (e) => {
+	// 	e.preventDefault();
+	// 	const selectedTrail = trails.find((t) => t._id === trail);
+	// 	const updatedInputs = {
+	// 		...inputs,
+	// 		trailName: selectedTrail ? selectedTrail.trailName : '',
+	// 	};
+	// 	if (isEditMode) {
+	// 		// Call the updateNote function
+	// 		updateNote(noteId, updatedInputs);
+	// 	} else {
+	// 		// Call the addNote function
+	// 		addNote(updatedInputs);
+	// 	}
+	// 	setInputs(initInputs);
+	// 	setIsEditMode(false);
+	// };
+
+	const handleSubmit = (e) => {
 		e.preventDefault();
 		const selectedTrail = trails.find((t) => t._id === trail);
 		const updatedInputs = {
@@ -41,12 +83,12 @@ export default function NoteForm() {
 		if (isEditMode) {
 			// Call the updateNote function
 			updateNote(noteId, updatedInputs);
+			setIsEditMode(false); // Reset edit mode after updating the note
 		} else {
 			// Call the addNote function
 			addNote(updatedInputs);
 		}
 		setInputs(initInputs);
-		setIsEditMode(false);
 	};
 	
 
@@ -224,7 +266,9 @@ export default function NoteForm() {
         />
       </div>
       <div className='button-container'>
-			<button className='post-btn'>{isEditMode ? 'Update Log' : 'Save Log'}</button>
+			<button className='post-btn' onClick={handleSubmit}>
+				{isEditMode ? 'Save Log' : 'Add Log'}
+			</button>
         {isEditMode && (
           <button className='post-btn' onClick={handleDelete}>
             Delete

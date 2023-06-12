@@ -97,66 +97,64 @@ export default function UserProvider(props) {
 	};
 
 	const getAllNotes = () => {
-		userAxios
-			.get('/proxy/api/notes')
-			.then((res) => {
-				const sortedNotes = res.data.sort((a, b) => a.dayNumber - b.dayNumber);
-				setUserState((prevState) => ({
-					...prevState,
-					notes: sortedNotes,
-				}));
-			})
-			.catch((err) => console.log(err.response.data.errMsg));
-	};
-
+    userAxios
+      .get('/proxy/api/notes')
+      .then((res) => {
+        const sortedNotes = res.data.sort((a, b) => a.dayNumber - b.dayNumber);
+        setUserState((prevState) => ({
+          ...prevState,
+          notes: sortedNotes.filter((note) => note.user === userState.user._id), // Filter notes by user
+        }));
+      })
+      .catch((err) => console.log(err.response.data.errMsg));
+  };
 
 	const getTrailNotes = (id) => {
-		userAxios
-			.get(`/proxy/api/notes/trail/${id}`)
-			.then((res) => {
-				setUserState((prevState) => ({
-					...prevState,
-					notes: res.data,
-				}));
-			})
-			.catch((err) => {
-				console.log(err.response.data.errMsg);
-			});
-	};
+    userAxios
+      .get(`/proxy/api/notes/trail/${id}`)
+      .then((res) => {
+        setUserState((prevState) => ({
+          ...prevState,
+          notes: res.data.filter((note) => note.user === userState.user._id), // Filter notes by user
+        }));
+      })
+      .catch((err) => {
+        console.log(err.response.data.errMsg);
+      });
+  };
 
 
 
 	const getAllTrails = () => {
-		userAxios
-			.get("/proxy/api/trails/user")
-			.then((res) => {
-				const trails = res.data;
-				const trailIds = trails.map((trail) => trail._id);
-				
-				// Fetch notes for each trail
-				const fetchTrailNotesPromises = trailIds.map((trailId) =>
-					userAxios.get(`/proxy/api/notes/trail/${trailId}`)
-				);
-	
-				// Execute all requests concurrently
-				Promise.all(fetchTrailNotesPromises)
-					.then((responses) => {
-						const updatedTrails = trails.map((trail, index) => ({
-							...trail,
-							notes: responses[index].data,
-						}));
-	
-						setUserState((prevState) => ({
-							...prevState,
-							trails: updatedTrails,
-						}));
-					})
-					.catch((err) => console.log(err.response.data.errMsg));
-			})
-			.catch((err) => console.log(err.response.data.errMsg));
-	};
+    userAxios
+      .get("/proxy/api/trails/user")
+      .then((res) => {
+        const trails = res.data.filter((trail) => trail.user === userState.user._id); // Filter trails by user
+        const trailIds = trails.map((trail) => trail._id);
+        
+        // Fetch notes for each trail
+        const fetchTrailNotesPromises = trailIds.map((trailId) =>
+          userAxios.get(`/proxy/api/notes/trail/${trailId}`)
+        );
 
-	
+        // Execute all requests concurrently
+        Promise.all(fetchTrailNotesPromises)
+          .then((responses) => {
+            const updatedTrails = trails.map((trail, index) => ({
+              ...trail,
+              notes: responses[index].data.filter((note) => note.user === userState.user._id), // Filter notes by user
+            }));
+
+            setUserState((prevState) => ({
+              ...prevState,
+              trails: updatedTrails,
+            }));
+          })
+          .catch((err) => console.log(err.response.data.errMsg));
+      })
+      .catch((err) => console.log(err.response.data.errMsg));
+  };
+
 
 	const addNote = (newNote) => {
 		const { trails } = userState;
