@@ -53,6 +53,7 @@ export default function FullNote(props) {
         <NoteForm
           noteId={id}
           formData={props}
+					isEditMode={isEditMode}
           setIsEditMode={setIsEditMode}
         />
       ) : (

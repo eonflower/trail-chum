@@ -33,7 +33,9 @@ export default function NavBar(props) {
 
   return (
     <div className='nav-container'>
-      <img className="logo" src={logoBrown} />
+			<Link to="/home" className='nav-links'>
+				<img className="logo" src={logoBrown} />
+			</Link>
       <button className="nav-toggle" onClick={toggleNav} ref={toggleRef}>
         <FontAwesomeIcon icon={faBars} />
       </button>

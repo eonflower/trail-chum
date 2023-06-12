@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../../context/UserProvider';
 
-export default function NoteForm({ noteId }) {
+export default function NoteForm({noteId, setIsEditMode, isEditMode}) {
   const { trail: trailId } = useParams();
   const { addNote, deleteNote, updateNote, trails, notes } = useContext(UserContext);
+	
   const initInputs = {
     dayNumber: '',
     date: '',
@@ -19,29 +20,17 @@ export default function NoteForm({ noteId }) {
   };
 
   const [inputs, setInputs] = useState(initInputs);
-	const [isEditMode, setIsEditMode] = useState(false);
-
-	// useEffect(() => {
-  //   if (noteId) {
-  //     const note = notes.find((note) => note._id === noteId);
-  //     if (note) {
-  //       setInputs(note);
-  //     }
-  //   }
-  // }, [noteId, notes]);
+	// const [isEditMode, setIsEditMode] = useState(false);
 
 	useEffect(() => {
-		if (noteId) {
-			const note = notes.find((note) => note._id === noteId);
-			if (note) {
-				setInputs((prevInputs) => ({
-					...prevInputs,
-					...note, // Include all existing note properties
-					trail: note.trail, // Update the trail value separately
-				}));
-			}
-		}
-	}, [noteId, notes]);
+    if (noteId) {
+      const note = notes.find((note) => note._id === noteId);
+      if (note) {
+        setInputs(note);
+      }
+    }
+  }, [noteId, notes]);
+
 
 
   const handleChange = (e) => {
@@ -270,7 +259,7 @@ export default function NoteForm({ noteId }) {
 				{isEditMode ? 'Save Log' : 'Add Log'}
 			</button>
         {isEditMode && (
-          <button className='post-btn' onClick={handleDelete}>
+          <button className='post-btn' onClick={deleteNote}>
             Delete
           </button>
 				)}

@@ -414,6 +414,10 @@ input.trail-name {
   border-radius: 0 0 10px 10px;
 }
 
+.log-container.first-item.last-item, .trail-container.first-item.last-item {
+  border-radius: 10px;
+}
+
 .log-container span, .trail-container span{
   
   display: flex;

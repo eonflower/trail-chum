@@ -2,6 +2,7 @@ const express = require("express");
 const noteRouter = express.Router();
 const Note = require("../models/Note");
 const Trail = require("../models/Trail")
+const User = require("../models/User")
 
 // Get All notes
 noteRouter.get("/", (req, res, next) => {
@@ -42,27 +43,45 @@ noteRouter.get('/:id', (req, res, next) => {
 
 // Add new note
 noteRouter.post('/', (req, res, next) => {
-  req.body.user = req.auth._id;
+  const userId = req.auth._id; // Get the user ID from the authenticated user
+
+  req.body.user = userId;
   const newNote = new Note(req.body);
+
   newNote.save((err, savedNote) => {
     if (err) {
       res.status(500);
       return next(err);
     }
-    Trail.findByIdAndUpdate(
-      req.body.trail, // Update the trail with the new note
-      { $push: { notes: savedNote._id } }, // Push the new note to the trail's notes array
+
+    User.findByIdAndUpdate(
+      userId, // Update the user with the new note
+      { $push: { notes: savedNote._id } }, // Push the new note to the user's notes array
       { new: true },
-      (err, updatedTrail) => {
+      (err, updatedUser) => {
         if (err) {
           res.status(500);
           return next(err);
         }
-        return res.status(201).send(savedNote);
+
+        Trail.findByIdAndUpdate(
+          req.body.trail, // Update the trail with the new note
+          { $push: { notes: savedNote._id } }, // Push the new note to the trail's notes array
+          { new: true },
+          (err, updatedTrail) => {
+            if (err) {
+              res.status(500);
+              return next(err);
+            }
+
+            return res.status(201).send(savedNote);
+          }
+        );
       }
     );
   });
 });
+
 
 // Update Note
 noteRouter.put('/:id', (req, res, next) => {

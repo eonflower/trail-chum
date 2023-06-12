@@ -24,6 +24,10 @@ const userSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Trail"}
 	],
+	notes: [{
+		type: Schema.Types.ObjectId,
+		ref: "Note"}
+	],
 })
 
 // pre-save hook to encrypt user passwords on signup

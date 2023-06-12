@@ -2,6 +2,7 @@ const express = require("express");
 const trailRouter = express.Router();
 const Trail = require("../models/Trail");
 const Note = require("../models/Note")
+const User = require("../models/User")
 
 // Get All Trails
 trailRouter.get('/user', (req, res, next) => {
@@ -43,18 +44,34 @@ trailRouter.get("/:id/notes", async (req, res, next) => {
   }
 });
 
-// Add new Trail
 trailRouter.post("/", (req, res, next) => {
-  req.body.user = req.auth._id;
+  const userId = req.auth._id; // Get the user ID from the authenticated user
+
+  req.body.user = userId;
   const newTrail = new Trail(req.body);
+
   newTrail.save((err, savedTrail) => {
     if (err) {
       res.status(500);
       return next(err);
     }
-    return res.status(201).send(savedTrail);
+
+    User.findByIdAndUpdate(
+      userId, // Update the user with the new trail
+      { $push: { trails: savedTrail._id } }, // Push the new trail to the user's trails array
+      { new: true },
+      (err, updatedUser) => {
+        if (err) {
+          res.status(500);
+          return next(err);
+        }
+
+        return res.status(201).send(savedTrail);
+      }
+    );
   });
 });
+
 
 // Update Trail
 trailRouter.put("/:id", (req, res, next) => {
