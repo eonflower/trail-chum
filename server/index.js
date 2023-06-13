@@ -8,10 +8,15 @@ const {expressjwt} = require('express-jwt')
 app.use(express.json())
 app.use(morgan('dev'))
 
-mongoose.connect(
-  process.env.DB_URL, () => 
-	console.log('Connected to the DB')
-)
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.DB_URL);
+    console.log('Connected to the DB')
+  } catch (err) {
+    console.log(err);
+    process.exit(1);
+  }
+}
 
 app.use('/auth', require('./routes/authRouter'))
 app.use('/api', expressjwt({ secret: process.env.SECRET, algorithms: ['HS256']})) // req.auth
@@ -26,6 +31,8 @@ app.use((err, req, res, next) => {
   return res.send({errMsg: err.message})
 })
 
-app.listen(7500, () => {
-  console.log(`Server is running on local port 7500`)
+connectDB().then(() => {
+  app.listen(7500, () => {
+    console.log(`Server is running on local port 7500`)
+  })
 })
