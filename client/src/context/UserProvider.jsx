@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import axios from 'axios'
-import config from "../utils/config"
+// import config from "../utils/config"
 
 export const UserContext = React.createContext()
 

@@ -5,9 +5,11 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const {expressjwt} = require('express-jwt')
+const path = require("path")
 
 app.use(express.json())
 app.use(morgan('dev'))
+app.use(express.static(path.join(__dirname, "client", "build")))
 app.use(cors(
   {
     origin: ["https://trail-chum-front.onrender.com"]
@@ -32,6 +34,10 @@ app.use((err, req, res, next) => {
   }
   return res.send({errMsg: err.message})
 })
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 app.listen(7500, () => {
   console.log(`Server is running on local port 7500`)
