@@ -22,7 +22,12 @@ authRouter.post("/signup", (req, res, next) => {
 				res.status(500)
 				return next(err)
 			}
-			const token = jwt.sign(savedUser.withoutPassword(), process.env.SECRET)
+			const token = jwt.sign(savedUser.withoutPassword(), process.env.SECRET);
+      if (!token) {
+        res.status(500);
+        return next(new Error("Token generation failed"));
+			}
+
 			return res.status(201).send({token, user: savedUser.withoutPassword()})
 		})
 	})
@@ -53,7 +58,7 @@ authRouter.post("/login", (req, res, next) => {
         res.status(500);
         return next(new Error("Token generation failed"));
 			}
-			
+
       return res.status(200).send({ token, user: user.withoutPassword() })
     })
   })
