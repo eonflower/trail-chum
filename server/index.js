@@ -3,11 +3,17 @@ const app = express()
 require('dotenv').config()
 const morgan = require('morgan')
 const mongoose = require('mongoose')
+const cors = require('cors')
 const {expressjwt} = require('express-jwt')
 
 app.use(express.json())
 app.use(morgan('dev'))
-app.use
+app.use(cors(
+  {
+    origin: ["https://trail-chum-front.onrender.com"]
+  }
+))
+
 
 mongoose.connect(
   process.env.DB_URL, () => 
