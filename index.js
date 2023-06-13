@@ -9,7 +9,7 @@ const path = require("path")
 
 app.use(express.json())
 app.use(morgan('dev'))
-app.use(express.static(path.join(__dirname, "client", "build")))
+app.use(express.static(path.join(__dirname, "client", "dist")))
 app.use(cors(
   {
     origin: ["https://trail-chum-front.onrender.com"]
@@ -36,7 +36,7 @@ app.use((err, req, res, next) => {
 })
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
 app.listen(7500, () => {
