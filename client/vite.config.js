@@ -8,7 +8,7 @@ export default defineConfig({
       '/proxy': {
         target: 'http://localhost:7500',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/proxy/, ''),
+        secure: false,
       },
     }
   },
