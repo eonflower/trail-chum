@@ -10,11 +10,11 @@ const path = require("path")
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(express.static(path.join(__dirname, "client", "dist")))
-app.use(cors(
-  {
-    origin: ["https://trail-chum-front.onrender.com"]
-  }
-))
+// app.use(cors(
+//   {
+//     origin: ["https://trail-chum-front.onrender.com"]
+//   }
+// ))
 
 
 mongoose.connect(
