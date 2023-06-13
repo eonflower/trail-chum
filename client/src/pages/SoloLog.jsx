@@ -24,7 +24,7 @@ export default function SoloLog() {
   };
 
 	if (!note) {
-    return <p>log deleted</p>; // Render a loading message if note is undefined
+    return <p>loading... </p>; // Render a loading message if note is undefined
   }
 
 	const formattedDate = format(new Date(note.date), 'MMMM do, yyyy')
