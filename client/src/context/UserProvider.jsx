@@ -24,7 +24,7 @@ export default function UserProvider(props) {
 	const [userState, setUserState] = useState(initState)
 
 	const signup = (credentials) => {
-		axios.post(`${config.API_URL}/proxy/auth/signup`, credentials)
+		axios.post(`https://trail-chum.onrender.com/proxy/auth/signup`, credentials)
 		.then(res => {
 			const {user, token} = res.data
 			localStorage.setItem("token", token)
@@ -39,7 +39,7 @@ export default function UserProvider(props) {
 	}
 
 	const login = (credentials) => {
-		axios.post(`${config.API_URL}/proxy/auth/login`, credentials)
+		axios.post(`https://trail-chum.onrender.com/proxy/auth/login`, credentials)
 		.then(res => {
 			const {user, token} = res.data 
 			localStorage.setItem("token", token)
@@ -81,7 +81,7 @@ export default function UserProvider(props) {
 	const getSoloNote = (id) => {
 		return new Promise((resolve, reject) => {
 			userAxios
-				.get(`${config.API_URL}/proxy/api/notes/${id}`)
+				.get(`https://trail-chum.onrender.com/proxy/api/notes/${id}`)
 				.then((res) => {
 					const soloNote = res.data;
 					setUserState((prevState) => ({
@@ -99,7 +99,7 @@ export default function UserProvider(props) {
 
 	const getAllNotes = () => {
     userAxios
-      .get(`${config.API_URL}/proxy/api/notes`)
+      .get(`https://trail-chum.onrender.com/proxy/api/notes`)
       .then((res) => {
         const sortedNotes = res.data.sort((a, b) => a.dayNumber - b.dayNumber);
         setUserState((prevState) => ({
@@ -112,7 +112,7 @@ export default function UserProvider(props) {
 
 	const getTrailNotes = (id) => {
     userAxios
-      .get(`${config.API_URL}/proxy/api/notes/trail/${id}`)
+      .get(`https://trail-chum.onrender.com/proxy/api/notes/trail/${id}`)
       .then((res) => {
         setUserState((prevState) => ({
           ...prevState,
@@ -128,14 +128,14 @@ export default function UserProvider(props) {
 
 	const getAllTrails = () => {
     userAxios
-      .get(`${config.API_URL}/proxy/api/trails/user`)
+      .get(`https://trail-chum.onrender.com/proxy/api/trails/user`)
       .then((res) => {
         const trails = res.data.filter((trail) => trail.user === userState.user._id); // Filter trails by user
         const trailIds = trails.map((trail) => trail._id);
         
         // Fetch notes for each trail
         const fetchTrailNotesPromises = trailIds.map((trailId) =>
-          userAxios.get(`${config.API_URL}/proxy/api/notes/trail/${trailId}`)
+          userAxios.get(`https://trail-chum.onrender.com/proxy/api/notes/trail/${trailId}`)
         );
 
         // Execute all requests concurrently
@@ -160,7 +160,7 @@ export default function UserProvider(props) {
 	const addNote = (newNote) => {
 		const { trails } = userState;
 		userAxios
-			.post(`${config.API_URL}/proxy/api/notes`, { ...newNote, trails: trails._id })
+			.post(`https://trail-chum.onrender.com/proxy/api/notes`, { ...newNote, trails: trails._id })
 			.then((res) => {
 				setUserState((prevState) => {
 					const updatedTrails = prevState.trails.map((trail) => {
@@ -182,7 +182,7 @@ export default function UserProvider(props) {
 					notes: [...trails.notes, res.data._id],
 				};
 				userAxios
-					.put(`${config.API_URL}/proxy/api/trails/${trails._id}`, updatedTrail)
+					.put(`https://trail-chum.onrender.com/proxy/api/trails/${trails._id}`, updatedTrail)
 					.then((res) => {
 						console.log(res)
 						setUserState((prevState) => {
@@ -212,7 +212,7 @@ export default function UserProvider(props) {
 
 	const addTrail = (newTrail) => {
 		const { user } = userState;
-		userAxios.post(`${config.API_URL}/proxy/api/trails`, {...newTrail, user: user._id})
+		userAxios.post(`https://trail-chum.onrender.com/proxy/api/trails`, {...newTrail, user: user._id})
 		.then(res => 
 			setUserState(prevState => ({
 			...prevState,
@@ -225,7 +225,7 @@ export default function UserProvider(props) {
 	
   const updateNote = (noteId, updatedNote) => {
     userAxios
-      .put(`${config.API_URL}/proxy/api/notes/${noteId}`, updatedNote)
+      .put(`https://trail-chum.onrender.com/proxy/api/notes/${noteId}`, updatedNote)
       .then((res) => {
         const updatedNotes = userState.notes.map((note) => {
           if (note._id === noteId) {
@@ -248,7 +248,7 @@ export default function UserProvider(props) {
 		if (confirmDelete) {
 			return new Promise((resolve, reject) => {
 				userAxios
-					.delete(`${config.API_URL}/proxy/api/trails/${id}`)
+					.delete(`https://trail-chum.onrender.com/proxy/api/trails/${id}`)
 					.then((res) => {
 						resolve();
 					})
@@ -265,7 +265,7 @@ export default function UserProvider(props) {
 const deleteNote = (id) => {
   return new Promise((resolve, reject) => {
     userAxios
-      .delete(`${config.API_URL}/proxy/api/notes/${id}`)
+      .delete(`https://trail-chum.onrender.com/proxy/api/notes/${id}`)
       .then((res) => {
         setUserState((prevState) => {
           // Remove the deleted note from the notes array
