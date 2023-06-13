@@ -116,7 +116,7 @@ input.password {
   left: 3rem;
   padding: 1rem 1.5rem;
   display: block;
-  background-color: #8a9d5cdc;
+  background-color: #8a9d5cec;
   border-radius: 10px;
 }
 
@@ -603,10 +603,12 @@ input.trail-name {
   .post-title {font-size: 1.8rem;}
   .solo-title {font-size: 1.3rem;}
   .log-day, .log-mileage, .log-trail, .log-direction{font-size: .9rem;}
+  .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo{font-size: .9rem;}
   .log-start-end {font-size: .9rem;}
 }
 
 @media screen and (max-width:500px){
+  .trail-name {font-size: 1.2rem;}
   label {font-size: .85rem;}
   .log-title {font-size: 1rem;}
   .post-title {font-size: 1.5rem;}
@@ -614,7 +616,8 @@ input.trail-name {
   .nav-toggle {left: 1.5rem; font-size: 2rem;}
   .solo-title {font-size: 1.3rem;}
   .log-day, .log-mileage, .log-trail, .log-direction{font-size: .8rem;}
-  .log-start-end {font-size: .9rem;}
+  .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo{font-size: .8rem;}
+  .log-start-end {font-size: .85rem;}
 }
 
 @media screen and (max-width:420px){
@@ -622,7 +625,8 @@ input.trail-name {
   label {font-size: .75rem;}
   .log-title {font-size: .9rem;}
   .home-page {padding: 2rem .7rem;}
-  .solo-title {font-size: 1.3rem;}
+  .solo-title {font-size: 1rem;}
   .log-day, .log-mileage, .log-trail, .log-direction{font-size: .7rem;}
-  .log-start-end {font-size: .9rem;}
+  .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo{font-size: .7rem;}
+  .log-start-end {font-size: .85rem;}
 }
