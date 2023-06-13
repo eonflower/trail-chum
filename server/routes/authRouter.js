@@ -43,15 +43,17 @@ authRouter.post("/login", (req, res, next) => {
     }
 
     user.checkPassword(req.body.password, (err, isMatch) => {
-      if(err){
-        res.status(403)
-        return next(new Error("Username or Password are incorrect"))
+      if (err || !isMatch) {
+        res.status(403);
+        return next(new Error("Username or Password are incorrect"));
       }
-      if(!isMatch){
-        res.status(403)
-        return next(new Error("Username or Password are incorrect"))
-      }
-      const token = jwt.sign(user.withoutPassword(), process.env.SECRET)
+
+      const token = jwt.sign(user.withoutPassword(), process.env.SECRET);
+      if (!token) {
+        res.status(500);
+        return next(new Error("Token generation failed"));
+			}
+			
       return res.status(200).send({ token, user: user.withoutPassword() })
     })
   })
