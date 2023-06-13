@@ -23,7 +23,7 @@ export default function AuthForm(props){
         placeholder="Username"/>
 				<br />
       <input 
-        type="text" 
+        type="password" 
         value={password} 
         name="password" 
 				className='password'
