@@ -24,7 +24,7 @@ export default function UserProvider(props) {
 	const [userState, setUserState] = useState(initState)
 
 	const signup = (credentials) => {
-		axios.post('/proxy/auth/signup', credentials)
+		axios.post(`${config.API_URL}/proxy/auth/signup`, credentials)
 		.then(res => {
 			const {user, token} = res.data
 			localStorage.setItem("token", token)
