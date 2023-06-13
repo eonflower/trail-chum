@@ -20,11 +20,10 @@ export default function UserProvider(props) {
 		notes: [],
 		errMsg: ""
 	}
-
 	const [userState, setUserState] = useState(initState)
 
 	const signup = (credentials) => {
-		axios.post(`/auth/signup`, credentials)
+		axios.post(`/proxy/auth/signup`, credentials)
 		.then(res => {
 			const {user, token} = res.data
 			localStorage.setItem("token", token)
@@ -39,7 +38,7 @@ export default function UserProvider(props) {
 	}
 
 	const login = (credentials) => {
-		axios.post(`/auth/login`, credentials)
+		axios.post(`/proxy/auth/login`, credentials)
 		.then(res => {
 			const {user, token} = res.data 
 			localStorage.setItem("token", token)
@@ -81,7 +80,7 @@ export default function UserProvider(props) {
 	const getSoloNote = (id) => {
 		return new Promise((resolve, reject) => {
 			userAxios
-				.get(`/api/notes/${id}`)
+				.get(`/proxy/api/notes/${id}`)
 				.then((res) => {
 					const soloNote = res.data;
 					setUserState((prevState) => ({
@@ -99,7 +98,7 @@ export default function UserProvider(props) {
 
 	const getAllNotes = () => {
     userAxios
-      .get(`/api/notes`)
+      .get(`/proxy/api/notes`)
       .then((res) => {
         const sortedNotes = res.data.sort((a, b) => a.dayNumber - b.dayNumber);
         setUserState((prevState) => ({
@@ -112,7 +111,7 @@ export default function UserProvider(props) {
 
 	const getTrailNotes = (id) => {
     userAxios
-      .get(`/api/notes/trail/${id}`)
+      .get(`/proxy/api/notes/trail/${id}`)
       .then((res) => {
         setUserState((prevState) => ({
           ...prevState,
@@ -128,14 +127,14 @@ export default function UserProvider(props) {
 
 	const getAllTrails = () => {
     userAxios
-      .get(`/api/trails/user`)
+      .get(`/proxy/api/trails/user`)
       .then((res) => {
         const trails = res.data.filter((trail) => trail.user === userState.user._id); // Filter trails by user
         const trailIds = trails.map((trail) => trail._id);
         
         // Fetch notes for each trail
         const fetchTrailNotesPromises = trailIds.map((trailId) =>
-          userAxios.get(`/api/notes/trail/${trailId}`)
+          userAxios.get(`/proxy/api/notes/trail/${trailId}`)
         );
 
         // Execute all requests concurrently
@@ -160,7 +159,7 @@ export default function UserProvider(props) {
 	const addNote = (newNote) => {
 		const { trails } = userState;
 		userAxios
-			.post(`/api/notes`, { ...newNote, trails: trails._id })
+			.post(`/proxy/api/notes`, { ...newNote, trails: trails._id })
 			.then((res) => {
 				setUserState((prevState) => {
 					const updatedTrails = prevState.trails.map((trail) => {
@@ -182,7 +181,7 @@ export default function UserProvider(props) {
 					notes: [...trails.notes, res.data._id],
 				};
 				userAxios
-					.put(`/api/trails/${trails._id}`, updatedTrail)
+					.put(`/proxy/api/trails/${trails._id}`, updatedTrail)
 					.then((res) => {
 						console.log(res)
 						setUserState((prevState) => {
@@ -212,7 +211,7 @@ export default function UserProvider(props) {
 
 	const addTrail = (newTrail) => {
 		const { user } = userState;
-		userAxios.post(`/api/trails`, {...newTrail, user: user._id})
+		userAxios.post(`/proxy/api/trails`, {...newTrail, user: user._id})
 		.then(res => 
 			setUserState(prevState => ({
 			...prevState,
@@ -225,7 +224,7 @@ export default function UserProvider(props) {
 	
   const updateNote = (noteId, updatedNote) => {
     userAxios
-      .put(`/api/notes/${noteId}`, updatedNote)
+      .put(`/proxy/api/notes/${noteId}`, updatedNote)
       .then((res) => {
         const updatedNotes = userState.notes.map((note) => {
           if (note._id === noteId) {
@@ -248,7 +247,7 @@ export default function UserProvider(props) {
 		if (confirmDelete) {
 			return new Promise((resolve, reject) => {
 				userAxios
-					.delete(`/api/trails/${id}`)
+					.delete(`/proxy/api/trails/${id}`)
 					.then((res) => {
 						resolve();
 					})
@@ -265,7 +264,7 @@ export default function UserProvider(props) {
 const deleteNote = (id) => {
   return new Promise((resolve, reject) => {
     userAxios
-      .delete(`/api/notes/${id}`)
+      .delete(`/proxy/api/notes/${id}`)
       .then((res) => {
         setUserState((prevState) => {
           // Remove the deleted note from the notes array

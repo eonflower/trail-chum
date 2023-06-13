@@ -76,7 +76,7 @@ input.password {
 	left: 0;
 	right: 0;
   height: 110px;
-	padding: .5rem;
+	padding: .5rem .7rem;
   z-index: 2;
 }
 
@@ -99,7 +99,7 @@ input.password {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 3rem;
+  left: 2rem;
   background: none;
   border: none;
   font-size: 2.8rem;
@@ -113,10 +113,10 @@ input.password {
 .navbar.open {
   position: absolute;
   top: 5rem;
-  left: 3rem;
+  left: 2rem;
   padding: 1rem 1.5rem;
   display: block;
-  background-color: #8a9d5cec;
+  background-color: #8a9d5c;
   border-radius: 10px;
 }
 
@@ -601,10 +601,16 @@ input.trail-name {
 
 @media screen and (max-width:600px){
   .post-title {font-size: 1.8rem;}
+  .nav-toggle {font-size: 1.8rem; left: .7rem;}
+  .navbar.open {left: .7rem; padding: .5rem .8rem;}
+  .nav-links {font-size: .8rem;}
   .solo-title, .trail-notes-title {font-size: 1.3rem;}
-  .log-day, .log-mileage, .log-trail, .log-direction{font-size: .9rem;}
-  .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo{font-size: .9rem;}
+  .home-page {padding: 2rem .7rem;}
+  .trail-notes-page, .trail-page, .solo-page {padding: 1rem .7rem}
+  p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .back-button, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description {font-size: .9rem;}
+  .back-button {padding: .3rem .5rem}
   .log-start-end {font-size: .9rem;}
+  .log-edit, .log-delete {font-size: .7rem; padding: 8px 13px}
 }
 
 @media screen and (max-width:500px){
@@ -612,22 +618,30 @@ input.trail-name {
   label {font-size: .85rem;}
   .log-title {font-size: 1rem;}
   .post-title {font-size: 1.5rem;}
-  .home-page {padding: 2rem .7rem;}
-  .nav-toggle {left: 1.5rem; font-size: 2rem;}
   .solo-title, .trail-notes-title {font-size: 1.3rem;}
-  .log-day, .log-mileage, .log-trail, .log-direction{font-size: .8rem;}
-  .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo{font-size: .8rem;}
+  p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .back-button, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description  {font-size: .8rem;}
   .log-start-end {font-size: .85rem;}
+  .log-edit, .log-delete {font-size: .6rem; padding: 6px 11px}
 }
 
 @media screen and (max-width:420px){
   .trail-name {font-size: 1rem;}
   .post-container {margin-bottom: 3rem;}
+  .trail-container {padding: .8rem;}
   label {font-size: .75rem;}
   .log-title {font-size: .9rem;}
-  .home-page {padding: 2rem .7rem;}
   .solo-title, .trail-notes-title {font-size: 1rem;}
-  .log-day, .log-mileage, .log-trail, .log-direction{font-size: .7rem;}
-  .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo{font-size: .7rem;}
+  p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description  {font-size: .7rem;}
   .log-start-end {font-size: .85rem;}
+  .log-edit, .log-delete {font-size: .5rem; padding: 4px 9px}
+}
+
+@media screen and (max-width:350px){
+  .trail-name {font-size: .8rem;}
+  .post-container {margin-bottom: 3rem;}
+  label {font-size: .7rem;}
+  .log-title {font-size: .8rem;}
+  .solo-title, .trail-notes-title {font-size: .8rem;}
+  p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description  {font-size: .6rem;}
+  .log-start-end {font-size: .6rem;}
 }
