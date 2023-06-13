@@ -258,11 +258,6 @@ export default function NoteForm({noteId, setIsEditMode, isEditMode}) {
 			<button className='post-btn' onClick={handleSubmit}>
 				{isEditMode ? 'Save Log' : 'Add Log'}
 			</button>
-        {isEditMode && (
-          <button className='post-btn' onClick={deleteNote}>
-            Delete
-          </button>
-				)}
       </div>
     </form>
   );

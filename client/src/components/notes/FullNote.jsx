@@ -59,14 +59,14 @@ export default function FullNote(props) {
       ) : (
         <>
           <span className='solo-span'>
-            <h3 className='log-day'>{trailName}</h3>
+            <h3 className='log-trail-solo'>{trailName}</h3>
             <p className='bullet'>|</p>
-            <h3 className='log-mileage'>{mileage === '' ? '0 miles' : mileage}</h3>
+            <h3 className='log-mileage-solo'>{mileage === '' ? '0 miles' : mileage}</h3>
             <p className='bullet'>|</p>
-            <h3 className='log-direction'>{trailDirection}</h3>
+            <h3 className='log-direction-solo'>{trailDirection}</h3>
           </span>
           <span className='log-location'>
-            <h4>
+            <h4 className='log-start-end'>
               {startLocation} {startLocation ? '-' : ''} {endLocation}
             </h4>
           </span>

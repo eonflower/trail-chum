@@ -1,11 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserProvider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import Note from '../components/notes/Note';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function TrailNotes(props) {
   const { notes, getTrailNotes, trails } = useContext(UserContext);
   const { id } = useParams();
+  const navigate = useNavigate();
   const [trailName, setTrailName] = useState('');
 
   useEffect(() => {
@@ -21,11 +25,18 @@ export default function TrailNotes(props) {
     }
   }, [id, trails]);
 
+
+  const handleBack = () => {
+    navigate(-1); // Takes the user back to the previous page
+  };
   
 
 
   return (
     <div className='trail-notes-page'>
+      <button onClick={handleBack} className='back-button'>
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </button>
       <div className='trail-notes-container'>
       <h2 className='trail-notes-title'>{trailName} Notes</h2>
       <div className='log-list'>

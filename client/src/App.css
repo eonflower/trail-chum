@@ -236,6 +236,7 @@ img.home-title {
 textarea.notes-textarea {
   width: 100%;
   min-height: 80px;
+  padding: .5rem
 }
 
 .button-container {
@@ -384,9 +385,7 @@ input.trail-name {
   text-transform: capitalize;
 }
 
-.note-span {
-  margin-right: 2rem;
-}
+
 
 .log-list a, .trail-list a {
   text-decoration: none;
@@ -510,6 +509,7 @@ input.trail-name {
 .button-container {
   display: flex;
   justify-content: flex-end;
+  gap: .5rem;
   width: 100%;
 }
 
@@ -597,4 +597,32 @@ input.trail-name {
 .log-delete:disabled, .log-edit:disabled {
   cursor: default;
   opacity: .24;
+}
+
+@media screen and (max-width:600px){
+  .post-title {font-size: 1.8rem;}
+  .solo-title {font-size: 1.3rem;}
+  .log-day, .log-mileage, .log-trail, .log-direction{font-size: .9rem;}
+  .log-start-end {font-size: .9rem;}
+}
+
+@media screen and (max-width:500px){
+  label {font-size: .85rem;}
+  .log-title {font-size: 1rem;}
+  .post-title {font-size: 1.5rem;}
+  .home-page {padding: 2rem .7rem;}
+  .nav-toggle {left: 1.5rem; font-size: 2rem;}
+  .solo-title {font-size: 1.3rem;}
+  .log-day, .log-mileage, .log-trail, .log-direction{font-size: .8rem;}
+  .log-start-end {font-size: .9rem;}
+}
+
+@media screen and (max-width:420px){
+  .post-container {margin-bottom: 3rem;}
+  label {font-size: .75rem;}
+  .log-title {font-size: .9rem;}
+  .home-page {padding: 2rem .7rem;}
+  .solo-title {font-size: 1.3rem;}
+  .log-day, .log-mileage, .log-trail, .log-direction{font-size: .7rem;}
+  .log-start-end {font-size: .9rem;}
 }
