@@ -5,7 +5,7 @@ import { UserContext } from '../context/UserProvider';
 import FullNote from '../components/notes/FullNote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 
 export default function SoloLog() {
   const { id } = useParams();
@@ -27,7 +27,11 @@ export default function SoloLog() {
     return <p>loading... </p>; // Render a loading message if note is undefined
   }
 
-	const formattedDate = format(new Date(note.date), 'MMMM do, yyyy')
+  const correctDate = addDays(new Date(note.date), 1)
+
+	const formattedDate = format(new Date(correctDate), 'MMMM do, yyyy')
+
+
 	
   return (
     <div className='solo-page'>
