@@ -60,7 +60,12 @@ export default function TrailNotes(props) {
       <div className='trail-notes-container'>
       
       {notes.length === 0 ?
+      <>
       <img className="notice-img" src={logImg} alt="" />
+      <Link className='add-log-btn' to="/post">
+        <button className='post-btn add-log-btn'>add log</button>
+        </Link>
+        </>
       :
       <>
       <h2 className='trail-notes-title'>{trailName} Notes</h2>

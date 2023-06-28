@@ -71,8 +71,7 @@ body {
 .password-toggle {
   position: absolute;
   z-index: 2;
-  top: 0;
-  bottom: 0;
+  top: 30%;
   right: 40px;
   background: none;
   border: none;
@@ -229,6 +228,7 @@ img.logs-title {
   margin: 0 auto;
   max-width: 700px;
   padding: 1rem;
+  margin-bottom: 2rem;
   background-color: #dce3a5;
   border-radius: 10px;
   box-shadow: #839358a2 0 0 3px;

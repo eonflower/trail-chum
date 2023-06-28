@@ -38,7 +38,7 @@ export default function AuthForm(props){
 				className='password'
         onChange={handleChange} 
         placeholder="Password"/>
-        <button className='password-toggle' onClick={togglePassword}>{!passwordShown ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}</button>
+        <p className='password-toggle' onClick={togglePassword}>{!passwordShown ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}</p>
         </div>
       
 				<br />
