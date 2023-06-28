@@ -3,7 +3,7 @@ import { Routes, Route, Navigate} from 'react-router-dom'
 import { UserContext } from './context/UserProvider'
 import ProtectedRoute from './components/ProtectedRoute'
 import Auth from './pages/Auth'
-import Home from './pages/Home'
+import Logs from './pages/Logs'
 import Post from './pages/Post'
 import Nav from './components/NavBar'
 import Trails from './pages/Trails'
@@ -12,6 +12,7 @@ import TrailNotes from './pages/TrailNotes'
 import './App.css'
 import NoteList from './components/notes/NoteList'
 import SoloLog from './pages/SoloLog'
+import Footer from './components/Footer'
 
 
 
@@ -24,13 +25,13 @@ function App() {
       <Routes>
         <Route
           path='/'
-          element={token ? <Navigate to='/home' /> : <Auth />}
+          element={token ? <Navigate to='/trails' /> : <Auth />}
         />
         <Route
-          path='/home'
+          path='/logs'
           element={
             <ProtectedRoute token={token} redirectTo='/'>
-              <Home />
+              <Logs />
             </ProtectedRoute>
           }
         />
@@ -67,6 +68,7 @@ function App() {
           }
         />
       </Routes>
+      {token && <Footer />}
     </div>
   );
 }

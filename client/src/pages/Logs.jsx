@@ -1,15 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
+import {Link} from "react-router-dom"
 import NoteList from '../components/notes/NoteList'
 import { UserContext } from '../context/UserProvider'
-import title from '../assets/logbook.png'
+import logsImg from '../assets/logbook.png'
 
 
-export default function Home() {
-  const { notes, getAllNotes, trails, getTrailNotes } = useContext(UserContext);
+
+export default function Logs() {
+  const { notes, getAllNotes, getAllTrails, trails, getTrailNotes } = useContext(UserContext);
   const [selectedTrail, setSelectedTrail] = useState('');
 
   useEffect(() => {
-    getAllNotes();
+    getAllNotes()
+    getAllTrails()
   }, []);
 
   const handleTrailChange = (event) => {
@@ -23,11 +26,9 @@ export default function Home() {
     }
   };
 
-  return (
-    <div className='home-page'>
-      <div className='home-container'>
-        {/* <img className='home-title' src={title} alt='title that says logbook' /> */}
-        <select 
+  const logs =
+  <>
+  <select 
 					value={selectedTrail} 
 					onChange={handleTrailChange}
 					className='select-trail dropdown'>
@@ -38,7 +39,21 @@ export default function Home() {
             </option>
           ))}
         </select>
-        <NoteList notes={notes} selectedTrailId={selectedTrail} />
+        <NoteList notes={notes} selectedTrailId={selectedTrail} /></>
+
+  return (
+    <div className='logs-page'>
+      <div className='logs-container'>
+        {notes.length === 0 ?
+        <>
+        <img className="notice-img" src={logsImg} alt=''/>
+        <Link className='add-log-btn' to="/post">
+        <button className='post-btn add-log-btn'>add log</button>
+        </Link>
+        </>
+        
+        :
+        <>{logs}</>}
       </div>
     </div>
   );

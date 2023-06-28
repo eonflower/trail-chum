@@ -44,9 +44,14 @@ body {
   padding: 1rem;
 }
 
-.auth-title, .member-btn {
+.auth-title {
 	padding: 1rem;
   color: #f4fab1d7;
+}
+
+.member-btn {
+  color: #f4fab1d7;
+  padding-bottom: 1rem;
 }
 
 .username, .password {
@@ -59,8 +64,24 @@ body {
 
 }
 
-input.password {
-  margin-bottom: 1.2rem;
+.password-btn-container {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  right: 40px;
+  background: none;
+  border: none;
+
+
+}
+
+.err-msg {
+  padding: 1rem 0;
 }
 
 
@@ -142,10 +163,29 @@ input.password {
 
 }
 
+.app {
+  position: relative;
+}
+
+a.footer-link {
+  color: #edf4b2;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+}
+
+a.footer-link:hover {
+  color: #f2ed65;
+}
+
 
 /* Pages */
 
-.home-page, .trail-page, .trail-notes-page, .post-page, .solo-page {
+.logs-page, .trail-page, .trail-notes-page, .post-page, .solo-page {
   background-image: url("./assets/peaks.svg");
   background-size: cover;
   min-height: 100vh;
@@ -154,7 +194,7 @@ input.password {
 
 /* Home */
 
-img.home-title {
+img.logs-title {
   display: block;
   margin: 0 auto;
   padding-bottom: 1rem;
@@ -305,6 +345,21 @@ textarea.notes-textarea {
   z-index: -1;
 }
 
+.add-log-btn:after {
+  background-color: initial;
+  background-image: linear-gradient(92.83deg, #d0d37b 0, #a07962 100%);
+  bottom: 4px;
+  content: "";
+  display: block;
+  left: 4px;
+  overflow: hidden;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  transition: all 100ms ease-out;
+  z-index: -1;
+}
+
 .auth-btn:after {
   background-image: linear-gradient(92.83deg, #dee60b80 0, #bfea7f87 100%);
 }
@@ -371,6 +426,26 @@ input.trail-name {
 
 /* Log and Trail lists */
 
+.notice-img {
+  background-color: #f9fccd;
+  border-radius: 20px;
+  box-shadow: #839358a2 0 0 3px;
+  display: block;
+  margin: 0 auto;
+  padding: 1rem;
+  height: 250px;
+}
+
+.add-log-btn {
+  display: block;
+  margin: 1rem auto;
+  text-decoration: none;
+  color:#000000;
+}
+
+.log-container > a {
+  text-decoration: none;
+}
 
 .log-list {
   /* margin: 0 20%; */
@@ -449,6 +524,7 @@ input.trail-name {
 .trail-notes-title {
   display: flex;
   justify-content: center;
+  text-transform: capitalize;
   letter-spacing: 2px;
   padding: 0 0 2rem;
 }
@@ -606,8 +682,8 @@ input.trail-name {
   .nav-links {font-size: .8rem;}
   .solo-title, .trail-notes-title {font-size: 1.3rem;}
   .home-page {padding: 2rem .7rem;}
-  .trail-notes-page, .trail-page, .solo-page {padding: 1rem .7rem}
-  p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .back-button, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description {font-size: .9rem;}
+  .trail-notes-page, .trail-page, .solo-page, .logs-page {padding: 1rem .7rem}
+  p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .back-button, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description, a.footer-link {font-size: .9rem;}
   .back-button {padding: .3rem .5rem}
   .log-start-end {font-size: .9rem;}
   .log-edit, .log-delete {font-size: .7rem; padding: 8px 13px}
@@ -619,29 +695,32 @@ input.trail-name {
   .log-title {font-size: 1rem;}
   .post-title {font-size: 1.5rem;}
   .solo-title, .trail-notes-title {font-size: 1.3rem;}
-  p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .back-button, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description  {font-size: .8rem;}
+  p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .back-button, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description, a.footer-link  {font-size: .8rem;}
   .log-start-end {font-size: .85rem;}
   .log-edit, .log-delete {font-size: .6rem; padding: 6px 11px}
 }
 
 @media screen and (max-width:420px){
+  .notice-img {height: 200px}
   .trail-name {font-size: 1rem;}
   .post-container {margin-bottom: 3rem;}
   .trail-container {padding: .8rem;}
   label {font-size: .75rem;}
   .log-title {font-size: .9rem;}
   .solo-title, .trail-notes-title {font-size: 1rem;}
-  p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description  {font-size: .7rem;}
+  p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description, a.footer-link  {font-size: .7rem;}
   .log-start-end {font-size: .85rem;}
   .log-edit, .log-delete {font-size: .5rem; padding: 4px 9px}
 }
 
 @media screen and (max-width:350px){
+  .notice-img {height: 150px}
   .trail-name {font-size: .8rem;}
   .post-container {margin-bottom: 3rem;}
   label {font-size: .7rem;}
   .log-title {font-size: .8rem;}
   .solo-title, .trail-notes-title {font-size: .8rem;}
   p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description  {font-size: .6rem;}
-  .log-start-end {font-size: .6rem;}
+  .log-start-end, a.footer-link {font-size: .6rem;}
+  
 }

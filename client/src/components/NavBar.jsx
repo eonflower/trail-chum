@@ -33,15 +33,15 @@ export default function NavBar(props) {
 
   return (
     <div className='nav-container'>
-			<Link to="/home" className='nav-links'>
+			<Link to="/" className='nav-links'>
 				<img className="logo" src={logoBrown} />
 			</Link>
       <button className="nav-toggle" onClick={toggleNav} ref={toggleRef}>
         <FontAwesomeIcon icon={faBars} />
       </button>
       <div className={`navbar ${collapsed ? 'open' : ''}`} ref={navRef}>
-        <Link to="/home" className='nav-links'>Home</Link>
         <Link to="/trails" className='nav-links'>Trails</Link>
+        <Link to="/logs" className='nav-links'>Logs</Link>
         <Link to="/post" className='nav-links'>Add Log</Link>
         <button className='logout-btn nav-links' onClick={logout}>logout</button>
       </div>

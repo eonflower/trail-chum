@@ -8,6 +8,7 @@ const initInputs = {username: "", password: ""}
 export default function Auth() {
 	const [inputs, setinputs] = useState(initInputs)
 	const [toggle, setToggle] = useState(false)
+	
 
 	const { signup, login, errMsg, resetAuthErr } = useContext(UserContext)
 
@@ -62,7 +63,7 @@ export default function Auth() {
             btnText="Login"
 						errMsg={errMsg}
           />
-          <p className="member-btn" onClick={() => handleToggle()}>Not a member?</p>
+          <p className="member-btn" onClick={() => handleToggle()}>Click Here to Create Account</p>
         </>
       }
     </div>

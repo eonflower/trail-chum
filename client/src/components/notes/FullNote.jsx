@@ -23,7 +23,7 @@ export default function FullNote(props) {
   const handleDelete = () => {
     deleteNote(id)
       .then(() => {
-        navigate('/home'); // Redirect to the home page after successful deletion
+        navigate('/'); // Redirect to the home page after successful deletion
         window.location.reload();
       })
       .catch((error) => {
