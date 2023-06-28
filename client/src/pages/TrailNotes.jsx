@@ -68,7 +68,7 @@ export default function TrailNotes(props) {
         </>
       :
       <>
-      <h2 className='trail-notes-title'>{trailName} Notes</h2>
+      <h2 className='trail-notes-title'>{trailName} Logs</h2>
       <div className='log-list'>{logList}</div></>}
     </div>
     </div>
