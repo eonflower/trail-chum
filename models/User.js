@@ -6,11 +6,13 @@ const userSchema = new Schema({
 	username: {
 		type: String,
 		lowercase: true,
-		unique: true
+		required: [true, 'Please enter a username'],
+		unique: [true, 'That username is taken']
 	},
 	password: {
 		type: String,
-		required: true
+		required: [true, 'Please enter a password'],
+		min: [4, 'Password should be at least 4 characters']
 	},
 	memberSince: {
 		type: Date,

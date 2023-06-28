@@ -63,7 +63,7 @@ export default function Auth() {
             btnText="Login"
 						errMsg={errMsg}
           />
-          <p className="member-btn" onClick={() => handleToggle()}>Click Here to Create Account</p>
+          <p className="member-btn" onClick={() => handleToggle()}>Click here to create new account</p>
         </>
       }
     </div>

@@ -12,13 +12,9 @@ authRouter.post("/signup", (req, res, next) => {
 			res.status(500)
 			return next(err)
 		}
-    if(!user) {
-			res.status(500)
-			return next(new Error("Username & Password Required"))
-		}
 		if(user) {
 			res.status(403)
-			return next(new Error("That Username is already Taken"))
+			return next(new Error("That username is already taken"))
 		}
 		const newUser = new User(req.body)
 		newUser.save((err, savedUser) => {
