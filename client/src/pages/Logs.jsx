@@ -45,13 +45,7 @@ export default function Logs() {
     <div className='logs-page'>
       <div className='logs-container'>
         {notes.length === 0 ?
-        <>
         <img className="notice-img" src={logsImg} alt=''/>
-        <Link className='add-log-btn' to="/post">
-        <button className='post-btn add-log-btn'>add log</button>
-        </Link>
-        </>
-        
         :
         <>{logs}</>}
       </div>

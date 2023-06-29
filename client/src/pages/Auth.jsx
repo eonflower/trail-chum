@@ -9,9 +9,10 @@ export default function Auth() {
 	const [inputs, setinputs] = useState(initInputs)
 	const [toggle, setToggle] = useState(false)
 	
+	
 
 	const { signup, login, errMsg, resetAuthErr } = useContext(UserContext)
-
+	const [validationErr, setValidationErr] = useState(errMsg)
 	const handleChange = (e) => {
 		const {name, value} = e.target
 		setinputs(prevInputs => ({
@@ -23,6 +24,15 @@ export default function Auth() {
 	const handleSignup = (e) => {
 		e.preventDefault()
 		signup(inputs)
+		if (errMsg === "User validation failed: username: Please enter a username"){
+			setValidationErr("Please enter a username")
+			} else if (errMsg === "User validation failed: password: Please enter a password") {
+			setValidationErr("Please enter a password")
+			} else if (errMsg === "User validation failed: username: Please enter a username, password: Please enter a password") {
+				setValidationErr("Username & password required")
+			} else {
+				setValidationErr(errMsg)
+			}
 	}
 
 	const handleLogin = (e) => {
@@ -34,6 +44,9 @@ export default function Auth() {
 		setToggle(prev => !prev)
 		resetAuthErr()
 	}
+
+	
+	
   return (
     <div className='auth'>
 			<img className="auth-logo" src={logo} alt='logo' />
@@ -49,7 +62,7 @@ export default function Auth() {
             handleSubmit={handleSignup}
             inputs={inputs}
             btnText="Sign up"
-						errMsg={errMsg}
+						errMsg={validationErr}
           />
           <p className="member-btn" onClick={() => handleToggle()}>Already a member?</p>
         </>
@@ -63,7 +76,7 @@ export default function Auth() {
             btnText="Login"
 						errMsg={errMsg}
           />
-          <p className="member-btn" onClick={() => handleToggle()}>Click here to create new account</p>
+          <p className="member-btn" onClick={() => handleToggle()}>Not a member?</p>
         </>
       }
     </div>
