@@ -3,28 +3,23 @@ const app = express()
 require('dotenv').config()
 const morgan = require('morgan')
 const mongoose = require('mongoose')
-const cors = require('cors')
 const {expressjwt} = require('express-jwt')
 const path = require("path")
 
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(express.static(path.join(__dirname, "client", "dist")))
-// app.use(cors(
-//   {
-//     origin: ["https://trail-chum-front.onrender.com"]
-//   }
-// ))
 
 
 mongoose.connect(
-  process.env.DB_URL, () => 
-	console.log('Connected to the DB')
+  process.env.DB_URL,
+  (err) => err ? console.log(err) : console.log("Connected to the DB")
 )
 
 app.use('/auth', require('./routes/authRouter'))
 app.use('/api', expressjwt({ secret: process.env.SECRET, algorithms: ['HS256']})) // req.auth
 app.use('/api/notes', require('./routes/noteRouter'))
+app.use('/api/account', require('./routes/authRouter'))
 app.use('/api/trails', require('./routes/trailRouter'))
 
 app.use((err, req, res, next) => {

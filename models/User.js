@@ -12,7 +12,11 @@ const userSchema = new Schema({
 	password: {
 		type: String,
 		required: [true, 'Please enter a password'],
-		min: [4, 'Password should be at least 4 characters']
+	},
+	email: {
+		type: String,
+		lowercase: true,
+		required: [true, 'Please enter an email'],
 	},
 	memberSince: {
 		type: Date,
@@ -24,12 +28,9 @@ const userSchema = new Schema({
 	},
 	trails: [{
 		type: Schema.Types.ObjectId,
-		ref: "Trail"}
-	],
-	notes: [{
-		type: Schema.Types.ObjectId,
-		ref: "Note"}
-	],
+		ref: "Trail",
+	}],
+	
 })
 
 // pre-save hook to encrypt user passwords on signup

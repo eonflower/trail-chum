@@ -33,7 +33,7 @@ export default function NavBar(props) {
 
   return (
     <div className='nav-container'>
-			<Link to="/" className='nav-links'>
+			<Link to="/" className='logo-link'>
 				<img className="logo" src={logoBrown} />
 			</Link>
       <button className="nav-toggle" onClick={toggleNav} ref={toggleRef}>
@@ -43,6 +43,7 @@ export default function NavBar(props) {
         <Link to="/trails" className='nav-links'>Trails</Link>
         <Link to="/logs" className='nav-links'>Logs</Link>
         <Link to="/post" className='nav-links'>Add Log</Link>
+        <Link to="/account" className='nav-links'>Account</Link>
         <button className='logout-btn nav-links' onClick={logout}>logout</button>
       </div>
     </div>

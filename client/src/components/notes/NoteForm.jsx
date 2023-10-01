@@ -4,7 +4,8 @@ import { UserContext } from '../../context/UserProvider';
 
 export default function NoteForm({noteId, setIsEditMode, isEditMode}) {
   const { trail: trailId } = useParams();
-  const { addNote, deleteNote, updateNote, trails, notes } = useContext(UserContext);
+  const { addNote, updateNote, trails, notes } = useContext(UserContext);
+	
 	
   const initInputs = {
     dayNumber: '',
@@ -39,28 +40,13 @@ export default function NoteForm({noteId, setIsEditMode, isEditMode}) {
       ...prevInputs,
       [name]: value
     }));
+
+    if (name === 'trail' && value !== '') {
+      setTrailSelected(true);
+    } else {
+      setTrailSelected(false);
+    }
   };
-
-
-
-
-  // const handleSubmit = (e) => {
-	// 	e.preventDefault();
-	// 	const selectedTrail = trails.find((t) => t._id === trail);
-	// 	const updatedInputs = {
-	// 		...inputs,
-	// 		trailName: selectedTrail ? selectedTrail.trailName : '',
-	// 	};
-	// 	if (isEditMode) {
-	// 		// Call the updateNote function
-	// 		updateNote(noteId, updatedInputs);
-	// 	} else {
-	// 		// Call the addNote function
-	// 		addNote(updatedInputs);
-	// 	}
-	// 	setInputs(initInputs);
-	// 	setIsEditMode(false);
-	// };
 
 	const handleSubmit = (e) => {
 		e.preventDefault();

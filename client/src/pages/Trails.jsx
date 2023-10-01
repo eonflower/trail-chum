@@ -17,8 +17,8 @@ export default function Trails() {
 			<div className='page-container'>
 			<div className='trail-page-container'>
 			<TrailForm addTrail={addTrail}/>
-				{trails.length === 0 ?
-				<img className="notice-img" src={trailImg} alt="" />
+				{trails?.length === 0 ?
+				<img className="notice-img" src={trailImg} alt="redirect message that says you have no trails yet" />
 				:
 				<TrailList trails={trails}/>}
 				

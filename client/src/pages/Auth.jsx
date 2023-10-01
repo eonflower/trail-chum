@@ -1,18 +1,23 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import AuthForm from '../components/AuthForm'
 import { UserContext } from '../context/UserProvider'
 import logo from "../assets/trail-logo-brown.png"
+import About from '../components/About'
 
-const initInputs = {username: "", password: ""}
+const initInputs = {username: "", password: "", email: ''}
 
 export default function Auth() {
 	const [inputs, setinputs] = useState(initInputs)
 	const [toggle, setToggle] = useState(false)
-	
-	
 
 	const { signup, login, errMsg, resetAuthErr } = useContext(UserContext)
 	const [validationErr, setValidationErr] = useState(errMsg)
+	
+
+	useEffect(() => {
+		setValidationErr(errMsg)
+	}, [errMsg])
+
 	const handleChange = (e) => {
 		const {name, value} = e.target
 		setinputs(prevInputs => ({
@@ -21,18 +26,10 @@ export default function Auth() {
 		}))
 	}
 
+
 	const handleSignup = (e) => {
 		e.preventDefault()
 		signup(inputs)
-		if (errMsg === "User validation failed: username: Please enter a username"){
-			setValidationErr("Please enter a username")
-			} else if (errMsg === "User validation failed: password: Please enter a password") {
-			setValidationErr("Please enter a password")
-			} else if (errMsg === "User validation failed: username: Please enter a username, password: Please enter a password") {
-				setValidationErr("Username & password required")
-			} else {
-				setValidationErr(errMsg)
-			}
 	}
 
 	const handleLogin = (e) => {
@@ -52,8 +49,7 @@ export default function Auth() {
 			<img className="auth-logo" src={logo} alt='logo' />
 		<div className='auth-layout'>
 			<div className="auth-container">
-				
-			
+
       { toggle ?
         <>
 				<h1 className='auth-title'>Create Account</h1>
@@ -63,6 +59,7 @@ export default function Auth() {
             inputs={inputs}
             btnText="Sign up"
 						errMsg={validationErr}
+						isSignUp={true}
           />
           <p className="member-btn" onClick={() => handleToggle()}>Already a member?</p>
         </>
@@ -80,7 +77,9 @@ export default function Auth() {
         </>
       }
     </div>
+		
 		</div>
+		<About />
 		</div>
   )
 }

@@ -8,7 +8,7 @@ import Note from '../components/notes/Note';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function TrailNotes(props) {
-  const { notes, getTrailNotes, trails } = useContext(UserContext);
+  const { notes, getTrailNotes, selectedTrailId, trails } = useContext(UserContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const [trailName, setTrailName] = useState('');
@@ -17,8 +17,13 @@ export default function TrailNotes(props) {
 		getTrailNotes(id)
 	}, [id])
 
-  // Filter notes based on the selected trail id
+  const filteredNotes = selectedTrailId
+    ? notes.filter((note) => note.trail === selectedTrailId)
+    : notes;
 
+		const sortedNotes = filteredNotes?.sort((a, b) => a.dayNumber - b.dayNumber);
+
+  // Filter notes based on the selected trail id
   useEffect(() => {
     const trail = trails.find((trail) => trail._id === id);
     if (trail) {
@@ -32,7 +37,7 @@ export default function TrailNotes(props) {
   };
 
   const logList =
-  notes?.map((note, index) => (
+  sortedNotes?.map((note, index) => (
     <Link key={note._id} to={`/notes/${note._id}`} className='note-link'>
     <Note
       key={note._id}
@@ -59,7 +64,7 @@ export default function TrailNotes(props) {
       </button>
       <div className='trail-notes-container'>
       
-      {notes.length === 0 ?
+      {notes?.length === 0 ?
       <>
       <img className="notice-img" src={logImg} alt="" />
       <Link className='add-log-btn' to="/post">

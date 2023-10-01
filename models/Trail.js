@@ -7,14 +7,14 @@ const trailSchema = new Schema({
 		ref: 'User',
 		required: true
 	},
+	trailName: {
+		type: String,
+		required: true,
+	},
 	notes: [{
 		type: Schema.Types.ObjectId,
 		ref: "Note"}
 	],
-	trailName: {
-		type: String,
-		required: true,
-	}
 	
 })
 

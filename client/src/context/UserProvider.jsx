@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import axios from 'axios'
 // import config from "../utils/config"
 
+// Remember to add in /proxy to the axios requests when in development mode
+
 export const UserContext = React.createContext()
 
 const userAxios = axios.create()
@@ -16,8 +18,9 @@ export default function UserProvider(props) {
 	const initState = { 
 		user: JSON.parse(localStorage.getItem("user")) || {}, 
 		token: localStorage.getItem("token") || "",
-		trails: [],
-		notes: [],
+		trails: [{
+			notes: [],
+		}],
 		errMsg: ""
 	}
 	const [userState, setUserState] = useState(initState)
@@ -76,6 +79,49 @@ export default function UserProvider(props) {
 			errMsg: ""
 		}))
 	}
+
+	const getUser = (id) => {
+    return new Promise((resolve, reject) => {
+        userAxios
+            .get(`/api/account/${id}`)
+            .then((res) => {
+                const user = res.data;
+                setUserState((prevState) => ({
+                    ...prevState,
+                    user,
+                }));
+                resolve(user);
+            })
+            .catch((err) => {
+                console.log(err.response.data.errMsg);
+                reject(err);
+            });
+    });
+};
+
+	
+	const deleteUser = (id) => {
+		const confirmDelete = window.confirm("Are you sure you want to delete your account and all its associated trails and logs? You will not be able to recover this data.");
+	
+		if (confirmDelete) {
+			return new Promise((resolve, reject) => {
+				userAxios
+					.delete(`/api/account/${id}`)
+					.then((res) => {
+						const user = res.data;
+						resolve(user);
+						logout()
+						console.log('User deleted successfully');
+					})
+					.catch((err) => {
+						reject(err);
+						console.log(err.response.data.errMsg);
+					});
+			});
+		} else {
+			return Promise.reject('User deleted successfully');
+		}
+	};
 
 	const getSoloNote = (id) => {
 		return new Promise((resolve, reject) => {
@@ -315,6 +361,8 @@ const deleteNote = (id) => {
 				getTrailNotes,
         getAllTrails,
         resetAuthErr,
+				getUser,
+				deleteUser,
       }}
     >
       {props.children}

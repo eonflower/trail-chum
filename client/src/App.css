@@ -30,13 +30,13 @@ body {
   padding: 1rem;
 }
 
-.auth-layout {
+.auth-layout, .account-layout {
   display: flex;
   justify-content: center;
   text-align: center;
 }
 
-.auth-container{
+.auth-container {
   box-sizing: border-box;
   width: 320px;
   background-color: #2a3a16;
@@ -52,9 +52,11 @@ body {
 .member-btn {
   color: #f4fab1d7;
   padding-bottom: 1rem;
+  width: 180px;
+  margin: 0 auto;
 }
 
-.username, .password {
+.username, .password, .email {
 	margin: .5rem;
 	padding: .65rem 0 .65rem 1rem;
 	width: 225px;
@@ -83,7 +85,101 @@ body {
   padding: 1rem 0;
 }
 
+/* About */
 
+.about-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 3rem;
+}
+
+.about-text-container {
+  position: fixed;
+  z-index: 2;
+  background-color:#f4fab1;
+  height: 60%;
+  width: 80%;
+  top: 16%;
+  left: 12.5%;
+  border-radius: 10px;
+  box-shadow: #839358 0 0 3px;
+}
+
+.about-esc-btn {
+  position: absolute;
+  font-size: 13px;
+  font-weight: 700;
+  justify-content: center;
+  letter-spacing: 1.5px;
+  top: .5rem;
+  right: .75rem;
+  padding: .5rem .8rem;
+  align-items: center;
+  background-clip: padding-box;
+  background-color: initial;
+  background-image: none;
+  border-style: none;
+  box-sizing: border-box;
+  color:#2a3a16;
+  cursor: pointer;
+  border-radius: 80px;
+  border: none;
+}
+
+.about-box {
+  border-radius: 10px;
+  padding: 1rem 5rem 3rem 2rem;
+  overflow: auto;
+  height: 100%;
+}
+
+.about-box > ol {
+  padding-left: 1rem;
+}
+
+.about-box > ol > li {
+  padding-bottom: .5rem;
+}
+
+.about-box > ol > li > p {
+  font-weight: 700;
+}
+
+.about-box > h2 {
+  padding-top: 1rem;
+}
+
+.about-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.about-box::-webkit-scrollbar-track {
+  background:#839358a2;
+  border-radius: 0 80px 80px 0;
+}
+
+.about-box::-webkit-scrollbar-thumb {
+  background: #2a3a1696;
+  border-radius: 0 80px 80px 0;
+}
+
+/* Account */
+
+.account-page-container {
+  padding-top: 3rem;
+  box-sizing: border-box;
+  width: 500px;
+  background-color: #2a3a16;
+  border-radius: 10px;
+  padding: 1rem;
+  color: #f4fab1a7;
+}
+
+.account-title {
+  font-size: 1.5rem;
+  padding-bottom: .5rem;
+  color: #f4fab1f0;
+}
 
 /* Navigation */
 
@@ -104,6 +200,13 @@ body {
   display: flex;
   margin: 0 auto;
   height: 95px;
+}
+
+.logo-link {
+  display: flex;
+  justify-content: center;
+  width: 100px;
+  margin: auto;
 }
 
 
@@ -184,7 +287,7 @@ a.footer-link:hover {
 
 /* Pages */
 
-.logs-page, .trail-page, .trail-notes-page, .post-page, .solo-page {
+.logs-page, .trail-page, .trail-notes-page, .post-page, .solo-page, .account-page {
   background-image: url("./assets/peaks.svg");
   background-size: cover;
   min-height: 100vh;
@@ -313,11 +416,13 @@ textarea.notes-textarea {
 
 
 .post-btn:before,
-.post-btn:after {
+.post-btn:after, 
+.about-esc-btn:before,
+.about-esc-btn:after{
   border-radius: 80px;
 }
 
-.post-btn:before {
+.post-btn:before, .about-esc-btn:before {
   background-color: rgba(84, 100, 60, 0.32);
   content: "";
   display: block;
@@ -330,7 +435,7 @@ textarea.notes-textarea {
   z-index: -2;
 }
 
-.post-btn:after {
+.post-btn:after, .about-esc-btn:after {
   background-color: initial;
   background-image: linear-gradient(92.83deg, #ced34e80 0, #6b854587 100%);
   bottom: 4px;
@@ -364,7 +469,7 @@ textarea.notes-textarea {
   background-image: linear-gradient(92.83deg, #dee60b80 0, #bfea7f87 100%);
 }
 
-.post-btn:hover:not(:disabled):after {
+.post-btn:hover:not(:disabled):after, .about-esc-btn:hover:not(:disabled):after {
   bottom: 0;
   left: 0;
   right: 0;
@@ -372,21 +477,26 @@ textarea.notes-textarea {
   transition-timing-function: ease-in;
 }
 
-.post-btn:active:not(:disabled) {
-  color: #ccc;
+.post-btn:active:not(:disabled), .about-esc-btn:active:not(:disabled) {
+  color: #fff79b;
 }
 
-.post-btn:active:not(:disabled):after {
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), linear-gradient(92.83deg, #ff7426 0, #f93a13 100%);
+.post-btn:active:not(:disabled):after, .about-esc-btn:active:not(:disabled):after {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), linear-gradient(92.83deg, #b59842 0, #6f4d12 100%);
   bottom: 4px;
   left: 4px;
   right: 4px;
   top: 4px;
 }
 
-.post-btn:disabled {
+.post-btn:disabled, .about-esc-btn:disabled {
   cursor: default;
   opacity: .24;
+}
+
+.about-btn {
+  padding: 1.2rem;
+  font-size: 1.2rem;
 }
 
 
@@ -677,6 +787,8 @@ input.trail-name {
 
 @media screen and (max-width: 900px) {
   .notice-img {height: 170px}
+
+  .about-text-container {top: 18%;}
 }
 
 @media screen and (max-width:600px){
@@ -692,6 +804,28 @@ input.trail-name {
   .back-button {padding: .3rem .5rem}
   .log-start-end {font-size: .9rem;}
   .log-edit, .log-delete {font-size: .7rem; padding: 8px 13px}
+
+  .auth-container {width: 80%;}
+  .auth-logo {height: 145px;}
+  .auth-title {font-size: 1.2rem;}
+  .member-btn {font-size: .8rem; width: 150px;}
+  .err-msg {font-size: .8rem; padding: .5rem 0;}
+  .post-btn {font-size: .8rem; padding: 8px 13px;}
+  input.email, input.username, input.password {font-size: .8rem; width: 90%; padding: .4rem 0 .4rem 1rem}
+  .password-toggle {font-size: 1rem; right: 20px}
+
+  .auth-container {width: 60%;}
+  .auth-logo {height: 200px;}
+  .password-toggle {right: 25px}
+
+  .about-text-container {width: 95%; left: 2.5%; top: 24%;}
+  .about-box {padding: 1rem 2.5rem 3rem 1rem; font-size: .9em;}
+  .about-box > h2 {font-size: 1.3rem;}
+  .about-box > ol > li > p {font-size: 1rem;}
+  .about-box > ol > li {padding-bottom: .3rem;}
+  .about-box > ol {padding-left: .5rem;}
+  .about-esc-btn {font-size: .65rem; padding: .3rem .5rem; right: .7rem; top: .3rem;}
+  input.username, input.password, input.email {width: 90%; padding: .6rem 0 .6rem 1rem}
 }
 
 @media screen and (max-width:500px){
@@ -715,6 +849,11 @@ input.trail-name {
   p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description, a.footer-link  {font-size: .7rem;}
   .log-start-end {font-size: .85rem;}
   .log-edit, .log-delete {font-size: .5rem; padding: 4px 9px}
+
+  .auth-container {width: 80%;}
+  .auth-logo {height: 135px;}
+  .about-text-container {width: 95%; left: 2.5%; top: 16%;}
+
 }
 
 @media screen and (max-width:350px){
@@ -724,11 +863,23 @@ input.trail-name {
   .navbar.open {left: .7rem; top: 3rem; padding: .5rem .8rem;}
   .notice-img {height: 100px}
   .trail-name {font-size: .8rem;}
+  .post-page {padding: 1rem .7rem}
+  .post-title {font-size: 1.2rem; padding-bottom: .5rem;}
   .post-container {margin-bottom: 3rem;}
-  label {font-size: .7rem;}
+  label, input, select {font-size: .6rem;}
   .log-title {font-size: .8rem;}
   .solo-title, .trail-notes-title {font-size: .8rem;}
   p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description  {font-size: .6rem;}
   .log-start-end, a.footer-link {font-size: .6rem;}
-  
+  .trail-form {width: 280px; margin: auto;}
+
+  .auth-container {width: 90%;}
+
+  .about-text-container {width: 95%; left: 2.5%; top: 15%;}
+  .about-box {padding: 1rem 2rem 3rem 1rem; font-size: .75rem;}
+  .about-box > h2 {font-size: 1.1rem;}
+  .about-box > ol > li > p {font-size: .8rem;}
+  .about-box > ol > li {padding-bottom: .3rem;}
+  .about-box > ol {padding-left: .5rem;}
+  .about-esc-btn {font-size: .65rem; padding: .3rem .5rem; right: .5rem; top: .3rem;}
 }

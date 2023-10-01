@@ -11,33 +11,54 @@ export default function AuthForm(props){
 		errMsg,
     inputs: {
       username, 
-      password
-    } 
+      password,
+      email
+    } ,
+    isSignUp,
   } = props
 
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePassword = () => {
     setPasswordShown(!passwordShown)
   }
-  
+
   return (
     <form className="auth-form" onSubmit={handleSubmit}>
-      <input 
-        type="text" 
-        value={username} 
+      {isSignUp && (
+        <>
+        <input
+          type="email"
+          value={email}
+          name="email"
+          aria-label='email'
+          className="email"
+          onChange={handleChange}
+          placeholder="email"
+        />
+        <br />
+        </>
+      )}
+      <input
+        type="text"
+        value={username}
         name="username"
-				className='username'
-        onChange={handleChange} 
-        placeholder="Username"/>
+        aria-label='username'
+        label="username"
+        className="username"
+        onChange={handleChange}
+        placeholder="username"
+      />
 				<br />
         <div className='password-btn-container'>
         <input 
-        type={passwordShown ? "text" : "password"} 
-        value={password} 
-        name="password" 
-				className='password'
-        onChange={handleChange} 
-        placeholder="Password"/>
+          type={passwordShown ? "text" : "password"} 
+          value={password} 
+          name="password" 
+          aria-label='password'
+          label="password"
+          className='password'
+          onChange={handleChange} 
+          placeholder="password"/>
         <p className='password-toggle' onClick={togglePassword}>{!passwordShown ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}</p>
         </div>
       
