@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserProvider';
-import IndividualLog from '../components/logs/IndividualLog';
+import IndividualLog from '../components/trailLogs/IndividualLog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { format, addDays } from 'date-fns';

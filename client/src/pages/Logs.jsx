@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {useNavigate, Link} from "react-router-dom"
-import FullLogList from '../components/logs/FullLogList'
+import FullLogList from '../components/trailLogs/FullLogList'
 import { UserContext } from '../context/UserProvider'
 import logsImg from '../assets/logbook.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

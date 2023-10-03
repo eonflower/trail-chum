@@ -4,7 +4,7 @@ import { UserContext } from '../context/UserProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logImg from "../assets/logs.png"
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import ListedLogItem from '../components/logs/ListedLogItem';
+import ListedLogItem from '../components/trailLogs/ListedLogItem';
 
 const TrailLogs = (props) => {
   const { logs, getTrailLogs, selectedTrailId, trails } = useContext(UserContext);
