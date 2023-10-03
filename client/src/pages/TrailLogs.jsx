@@ -3,9 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logImg from "../assets/logs.png"
-
-import Log from '../components/logs/ListedLogItem';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import ListedLogItem from '../components/logs/ListedLogItem';
 
 const TrailLogs = (props) => {
   const { logs, getTrailLogs, selectedTrailId, trails } = useContext(UserContext);
@@ -39,7 +38,7 @@ const TrailLogs = (props) => {
   const logList =
   sortedLogs?.map((log, index) => (
     <Link key={log._id} to={`/logs/${log._id}`} className='log-link'>
-    <Log
+    <ListedLogItem
       key={log._id}
       trail={log.trail}
       trailName={log.trailName}
