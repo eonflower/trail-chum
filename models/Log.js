@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const noteSchema = new Schema({
+const logSchema = new Schema({
 	user: {
 		type: Schema.Types.ObjectId,
 		ref: 'User',
@@ -41,7 +41,7 @@ const noteSchema = new Schema({
 	},
 })
 
-noteSchema.virtual('mileage').get(function () {
+logSchema.virtual('mileage').get(function () {
   const startMile = parseFloat(this.startMileMark);
   const endMile = parseFloat(this.endMileMark);
   if (!isNaN(startMile) && !isNaN(endMile)) {
@@ -51,4 +51,4 @@ noteSchema.virtual('mileage').get(function () {
   return '';
 });
 
-module.exports = mongoose.model("Note", noteSchema)
+module.exports = mongoose.model("Log", logSchema)

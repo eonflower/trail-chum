@@ -18,7 +18,7 @@ mongoose.connect(
 
 app.use('/auth', require('./routes/authRouter'))
 app.use('/api', expressjwt({ secret: process.env.SECRET, algorithms: ['HS256']})) // req.auth
-app.use('/api/notes', require('./routes/noteRouter'))
+app.use('/api/logs', require('./routes/logRouter'))
 app.use('/api/account', require('./routes/authRouter'))
 app.use('/api/trails', require('./routes/trailRouter'))
 

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import axios from 'axios'
 // import config from "../utils/config"
 
-// Remember to add in /proxy to the axios requests when in development mode
+// Remember to add in  to the axios requests when in development mode
 
 export const UserContext = React.createContext()
 
@@ -19,7 +19,7 @@ export default function UserProvider(props) {
 		user: JSON.parse(localStorage.getItem("user")) || {}, 
 		token: localStorage.getItem("token") || "",
 		trails: [{
-			notes: [],
+			logs: [],
 		}],
 		errMsg: ""
 	}
@@ -46,7 +46,7 @@ export default function UserProvider(props) {
 			const {user, token} = res.data 
 			localStorage.setItem("token", token)
 			localStorage.setItem("user", JSON.stringify(user))
-			getAllNotes()
+			getAllLogs()
 			setUserState(prevState => ({
 				...prevState,
 				user,
@@ -123,17 +123,17 @@ export default function UserProvider(props) {
 		}
 	};
 
-	const getSoloNote = (id) => {
+	const getSoloLog = (id) => {
 		return new Promise((resolve, reject) => {
 			userAxios
-				.get(`/api/notes/${id}`)
+				.get(`/api/logs/${id}`)
 				.then((res) => {
-					const soloNote = res.data;
+					const soloLog = res.data;
 					setUserState((prevState) => ({
 						...prevState,
-						notes: [soloNote], // Update notes state with an array containing the solo note
+						logs: [soloLog], // Update Logs state with an array containing the solo Log
 					}));
-					resolve(soloNote); // Resolve the promise with the solo note data
+					resolve(soloLog); // Resolve the promise with the solo Log data
 				})
 				.catch((err) => {
 					console.log(err.response.data.errMsg);
@@ -142,26 +142,26 @@ export default function UserProvider(props) {
 		});
 	};
 
-	const getAllNotes = () => {
+	const getAllLogs = () => {
     userAxios
-      .get(`/api/notes`)
+      .get(`/api/logs`)
       .then((res) => {
-        const sortedNotes = res.data.sort((a, b) => a.dayNumber - b.dayNumber);
+        const sortedLogs = res.data.sort((a, b) => a.dayNumber - b.dayNumber);
         setUserState((prevState) => ({
           ...prevState,
-          notes: sortedNotes.filter((note) => note.user === userState.user._id), // Filter notes by user
+          logs: sortedLogs.filter((log) => log.user === userState.user._id), // Filter Logs by user
         }));
       })
       .catch((err) => console.log(err.response.data.errMsg));
   };
 
-	const getTrailNotes = (id) => {
+	const getTrailLogs = (id) => {
     userAxios
-      .get(`/api/notes/trail/${id}`)
+      .get(`/api/logs/trail/${id}`)
       .then((res) => {
         setUserState((prevState) => ({
           ...prevState,
-          notes: res.data.filter((note) => note.user === userState.user._id), // Filter notes by user
+          logs: res.data.filter((log) => log.user === userState.user._id), // Filter Logs by user
         }));
       })
       .catch((err) => {
@@ -178,17 +178,17 @@ export default function UserProvider(props) {
         const trails = res.data.filter((trail) => trail.user === userState.user._id); // Filter trails by user
         const trailIds = trails.map((trail) => trail._id);
         
-        // Fetch notes for each trail
-        const fetchTrailNotesPromises = trailIds.map((trailId) =>
-          userAxios.get(`/api/notes/trail/${trailId}`)
+        // Fetch Logs for each trail
+        const fetchTrailLogsPromises = trailIds.map((trailId) =>
+          userAxios.get(`/api/logs/trail/${trailId}`)
         );
 
         // Execute all requests concurrently
-        Promise.all(fetchTrailNotesPromises)
+        Promise.all(fetchTrailLogsPromises)
           .then((responses) => {
             const updatedTrails = trails.map((trail, index) => ({
               ...trail,
-              notes: responses[index].data.filter((note) => note.user === userState.user._id), // Filter notes by user
+              logs: responses[index].data.filter((log) => log.user === userState.user._id), // Filter logs by user
             }));
 
             setUserState((prevState) => ({
@@ -202,17 +202,17 @@ export default function UserProvider(props) {
   };
 
 
-	const addNote = (newNote) => {
+	const addLog = (newLog) => {
 		const { trails } = userState;
 		userAxios
-			.post(`/api/notes`, { ...newNote, trails: trails._id })
+			.post(`/api/logs`, { ...newLog, trails: trails._id })
 			.then((res) => {
 				setUserState((prevState) => {
 					const updatedTrails = prevState.trails.map((trail) => {
 						if (trail._id === trails._id) {
 							return {
 								...trail,
-								notes: [...trail.notes, res.data],
+								logs: [...trail.logs, res.data],
 							};
 						}
 						return trail;
@@ -224,7 +224,7 @@ export default function UserProvider(props) {
 				});
 				const updatedTrail = {
 					...trails,
-					notes: [...trails.notes, res.data._id],
+					logs: [...trails.logs, res.data._id],
 				};
 				userAxios
 					.put(`/api/trails/${trails._id}`, updatedTrail)
@@ -235,7 +235,7 @@ export default function UserProvider(props) {
 								if (trail._id === trails._id) {
 									return {
 										...trail,
-										notes: [...trail.notes, res.data],
+										logs: [...trail.logs, res.data],
 									}
 								}
 								return trail;
@@ -256,33 +256,41 @@ export default function UserProvider(props) {
 
 
 	const addTrail = (newTrail) => {
-		const { user } = userState;
-		userAxios.post(`/api/trails`, {...newTrail, user: user._id})
-		.then(res => 
-			setUserState(prevState => ({
-			...prevState,
-			trails: [...prevState.trails, res.data]
-		})))
-		.catch(err => console.log(err.response.data.errMsg))
+		const { user, trails } = userState;
 		
+		// Check if the trail already exists
+		const isTrailExists = trails.some(trail => trail.trailName.toLowerCase() === newTrail.trailName.toLowerCase());
+		
+		if (isTrailExists) {
+			alert("Trail already exists!");
+			return;
+		}
+		
+		userAxios.post(`/api/trails`, {...newTrail, user: user._id})
+			.then(res => 
+				setUserState(prevState => ({
+					...prevState,
+					trails: [...prevState.trails, res.data]
+				})))
+			.catch(err => console.log(err.response.data.errMsg));
 	}
 
 	
-  const updateNote = (noteId, updatedNote) => {
+  const updateLog = (logId, updatedLog) => {
     userAxios
-      .put(`/api/notes/${noteId}`, updatedNote)
+      .put(`/api/logs/${logId}`, updatedLog)
       .then((res) => {
-        const updatedNotes = userState.notes.map((note) => {
-          if (note._id === noteId) {
+        const updatedLogs = userState.logs.map((log) => {
+          if (log._id === logId) {
             return res.data;
           }
-          return note;
+          return log;
         });
         setUserState((prevState) => ({
           ...prevState,
-          notes: updatedNotes,
+          logs: updatedLogs,
         }));
-        console.log('Note updated successfully');
+        // console.log('Log updated successfully');
       })
       .catch((err) => console.log(err.response.data.errMsg));
   };
@@ -295,11 +303,19 @@ export default function UserProvider(props) {
 				userAxios
 					.delete(`/api/trails/${id}`)
 					.then((res) => {
-						resolve();
+						setUserState((prevState) => {	
+							const updatedTrails = prevState.trails.filter((trail) => trail._id !== id);
+							return {
+								...prevState,
+								trails: updatedTrails,
+							};
+						});
+						console.log('Log deleted successfully');
+						resolve(); // Resolve the Promise on successful deletion
 					})
 					.catch((err) => {
-						reject(err);
 						console.log(err.response.data.errMsg);
+						reject(err);
 					});
 			});
 		} else {
@@ -307,38 +323,42 @@ export default function UserProvider(props) {
 		}
 	};
 
-const deleteNote = (id) => {
-  return new Promise((resolve, reject) => {
-    userAxios
-      .delete(`/api/notes/${id}`)
-      .then((res) => {
-        setUserState((prevState) => {
-          // Remove the deleted note from the notes array
-          const updatedNotes = prevState.notes.filter((note) => note._id !== id);
-
-          // Remove the deleted note from the corresponding trail array
-          const updatedTrails = prevState.trails.map((trail) => {
-            return {
-              ...trail,
-              notes: trail.notes.filter((note) => note._id !== id),
-            };
-          });
-
-          return {
-            ...prevState,
-            notes: updatedNotes,
-            trails: updatedTrails,
-          };
-        });
-
-        console.log('Note deleted successfully');
-        resolve(); // Resolve the Promise on successful deletion
-      })
-      .catch((err) => {
-        console.log(err.response.data.errMsg);
-        reject(err); // Reject the Promise on error
-      });
-  });
+const deleteLog = (id) => {
+	const confirmDelete = window.confirm("Are you sure you want to delete this log?");
+  
+	if (confirmDelete) {
+		return new Promise((resolve, reject) => {
+			userAxios
+				.delete(`/api/logs/${id}`)
+				.then((res) => {
+					setUserState((prevState) => {
+						// Remove the deleted Log from the Logs array
+						const updatedLogs = prevState.logs.filter((log) => log._id !== id);
+	
+						// Remove the deleted Log from the corresponding trail array
+						const updatedTrails = prevState.trails.map((trail) => {
+							return {
+								...trail,
+								logs: trail.logs.filter((log) => log._id !== id),
+							};
+						});
+	
+						return {
+							...prevState,
+							logs: updatedLogs,
+							trails: updatedTrails,
+						};
+					});
+	
+					console.log('Log deleted successfully');
+					resolve(); // Resolve the Promise on successful deletion
+				})
+				.catch((err) => {
+					console.log(err.response.data.errMsg);
+					reject(err); // Reject the Promise on error
+				});
+		});
+	}
 };
 
 
@@ -351,14 +371,14 @@ const deleteNote = (id) => {
         signup,
         login,
         logout,
-        addNote,
-				updateNote,
-				deleteNote,
+        addLog,
+				updateLog,
+				deleteLog,
 				deleteTrail,
         addTrail,
-        getAllNotes,
-				getSoloNote,
-				getTrailNotes,
+        getAllLogs,
+				getSoloLog,
+				getTrailLogs,
         getAllTrails,
         resetAuthErr,
 				getUser,

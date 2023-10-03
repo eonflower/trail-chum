@@ -1,10 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserProvider';
+import Radio from '../Radio';
+import Inputs from '../Inputs';
+import Textarea from '../Textarea';
 
-export default function NoteForm({noteId, setIsEditMode, isEditMode}) {
+export default function LogForm(props) {
+  const{ logId, setIsEditMode, isEditMode} = props
   const { trail: trailId } = useParams();
-  const { addNote, updateNote, trails, notes } = useContext(UserContext);
+  const navigate = useNavigate();
+  const { addLog, updateLog, trails, logs } = useContext(UserContext);
+  const [trailSelected, setTrailSelected] = useState(false);
+  const [trailValidationErr, setTrailValidationErr] = useState("");
+  const [dateSelected, setDateSelected] = useState(false);
+  const [dateValidationErr, setDateValidationErr] = useState("");
 	
 	
   const initInputs = {
@@ -21,50 +30,95 @@ export default function NoteForm({noteId, setIsEditMode, isEditMode}) {
   };
 
   const [inputs, setInputs] = useState(initInputs);
-	// const [isEditMode, setIsEditMode] = useState(false);
 
 	useEffect(() => {
-    if (noteId) {
-      const note = notes.find((note) => note._id === noteId);
-      if (note) {
-        setInputs(note);
+    if (logId) {
+      const log = logs.find((log) => log._id === logId);
+      if (log) {
+        setInputs(log);
       }
     }
-  }, [noteId, notes]);
+  }, [logId, logs]);
 
-
+  const selectionHandler = (e) => {
+    const { name, value } = e.target;
+      if (name === 'trail' && value !== '') {
+        setTrailSelected(true);
+        setTrailValidationErr("");
+      } else {
+        setTrailSelected(false);
+      }
+  
+      if (date === 'date' && value !== '') {
+        setDateSelected(true);
+        setDateValidationErr("");
+      } else {
+        setDateSelected(false);
+      }
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+  
+    let cleanedValue;
+  
+    if (name === 'dayNumber') {
+      // Remove non-numeric characters
+      cleanedValue = value.replace(/\D/g, ''); 
+    } 
+      // Remove non-numeric characters and limit to two decimal places
+      let numberText = value.replace(/[^0-9.]/g, ''); 
+  
+      const decimalParts = numberText.split('.');
+      let formattedNumber = decimalParts[0];
+      if (decimalParts.length > 1) {
+        formattedNumber += '.' + decimalParts[1].slice(0, 2);
+  
+    }
+  
     setInputs((prevInputs) => ({
       ...prevInputs,
-      [name]: value
+      [name]: name.includes('MileMark') ? formattedNumber : value,
+      [name]: name === 'dayNumber' ? cleanedValue : value,
     }));
-
-    if (name === 'trail' && value !== '') {
-      setTrailSelected(true);
-    } else {
-      setTrailSelected(false);
-    }
+  
+    selectionHandler(e);
   };
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		const selectedTrail = trails.find((t) => t._id === trail);
-		const updatedInputs = {
-			...inputs,
-			trailName: selectedTrail ? selectedTrail.trailName : '',
-		};
-		if (isEditMode) {
-			// Call the updateNote function
-			updateNote(noteId, updatedInputs);
-			setIsEditMode(false); // Reset edit mode after updating the note
-		} else {
-			// Call the addNote function
-			addNote(updatedInputs);
-		}
-		setInputs(initInputs);
-	};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    const selectedTrail = trails.find((t) => t._id === inputs.trail);
+    const updatedInputs = {
+      ...inputs,
+      trailName: selectedTrail ? selectedTrail.trailName : '',
+    };
+  
+    const isDateSelected = inputs.date !== '';
+    const isTrailSelected = inputs.trail !== '';
+  
+    if (!isDateSelected && !isTrailSelected) {
+      setTrailValidationErr("Please select a trail first");
+      setDateValidationErr("Please select a date first");
+    } else if (!isDateSelected) {
+      setTrailValidationErr("");
+      setDateValidationErr("Please select a date first");
+    } else if (!isTrailSelected) {
+      setDateValidationErr("");
+      setTrailValidationErr("Please select a trail first");
+    } else {
+      setTrailValidationErr("");
+      setDateValidationErr("");
+      if (isEditMode) {
+        updateLog(logId, updatedInputs);
+        setIsEditMode(false);
+      } else {
+        addLog(updatedInputs);
+        setInputs(initInputs);
+        navigate('/logs');
+      }
+    }
+  };
 	
 
   const calculateDistance = () => {
@@ -85,13 +139,12 @@ export default function NoteForm({noteId, setIsEditMode, isEditMode}) {
           <label>Trail:</label>
           <span>
             <select
-							required
 							name='trail' 
 							value={trail} 
 							className='select-trail'
 							onChange={handleChange}>
               <option value=''>Select Trail</option>
-              {trails && trails.map((trailOption) => (
+              {trails && trails?.map((trailOption) => (
                 <option 
 									key={trailOption._id} 
 									value={trailOption._id}>
@@ -101,150 +154,111 @@ export default function NoteForm({noteId, setIsEditMode, isEditMode}) {
             </select>
 					</span>
 				</div>
-      <div className='log-input'>
-        <label>Day Number:</label>
-        <span>
-          <input
-            required
-            type='number'
+          <Inputs
+            label='Day Number'
+            type='text'
             name='dayNumber'
             value={dayNumber}
             onChange={handleChange}
+            maxLength={4}
           />
-        </span>
-      </div>
-      <div className='log-input'>
-        <label>Date:</label>
-        <span>
-          <input
-            required
+          <Inputs
+            label='Date'
             type='date'
             name='date'
             value={date}
             onChange={handleChange}
           />
-        </span>
-      </div>
-      <div className='log-input'>
-        <div className='log-title-block'>
+          <div className='log-input'>
+          <div className='log-title-block'>
           <label>Trail Direction:</label>
         </div>
-        <span>
-          <label className='radio-label'>
-            <input
+            <Radio
+              label='NOBO'
               type='radio'
               name='trailDirection'
               value='NOBO'
               checked={trailDirection === 'NOBO'}
               onChange={handleChange}
             />
-            NOBO
-          </label>
-        </span>
-        <span>
-          <label className='radio-label'>
-            <input
+            <Radio
+              label='SOBO'
               type='radio'
               name='trailDirection'
               value='SOBO'
               checked={trailDirection === 'SOBO'}
               onChange={handleChange}
             />
-            SOBO
-          </label>
-        </span>
-        <span>
-          <label className='radio-label'>
-            <input
+            <Radio
+              label='WEBO'
               type='radio'
               name='trailDirection'
               value='WEBO'
               checked={trailDirection === 'WEBO'}
               onChange={handleChange}
             />
-            WEBO
-          </label>
-        </span>
-        <span>
-          <label className='radio-label'>
-            <input
+            <Radio
+              label='EABO'
               type='radio'
               name='trailDirection'
               value='EABO'
               checked={trailDirection === 'EABO'}
               onChange={handleChange}
             />
-            EABO
-          </label>
-        </span>
-      </div>
+          </div>
       <h3 className='log-title'>Where'd you start the day?</h3>
-      <div className='log-input'>
-        <label>Location:</label>
-        <span>
-          <input
+          <Inputs
+            label='Location'
             type='text'
             name='startLocation'
             value={startLocation}
             onChange={handleChange}
+            maxLength={40}
           />
-        </span>
-      </div>
-      <div className='log-input'>
-        <label>Mile Mark:</label>
-        <span>
-          <input
+          <Inputs
+            label='Mile Mark'
             type='text'
             name='startMileMark'
             value={startMileMark}
             onChange={handleChange}
+            maxLength={6}
           />
-        </span>
-      </div>
       <h3 className='log-title'>Where'd you end the day?</h3>
-      <div className='log-input'>
-        <label>Location:</label>
-        <span>
-          <input
+          <Inputs
+            label='Location'
             type='text'
             name='endLocation'
             value={endLocation}
             onChange={handleChange}
+            maxLength={40}
           />
-        </span>
-      </div>
-      <div className='log-input'>
-        <label>Mile Mark:</label>
-        <span>
-          <input
+          <Inputs
+            label='Mile Mark'
             type='text'
             name='endMileMark'
             value={endMileMark}
             onChange={handleChange}
+            maxLength={6}
           />
-        </span>
-      </div>
       <div className='log-input'>
         <p>Distance:</p>
         <p>{calculateDistance()}</p>
       </div>
       <h3 className='log-title'>What happened this day?</h3>
-      <div className='log-input'>
-        <div className='log-title-block'>
-          <label>Notes:</label>
-        </div>
-        <textarea
+        <Textarea
+          label='Notes'
           name='description'
           className='notes-textarea'
           value={description}
           onChange={handleChange}
         />
-      </div>
       <div className='button-container'>
 			<button className='post-btn' onClick={handleSubmit}>
 				{isEditMode ? 'Save Log' : 'Add Log'}
 			</button>
       </div>
+      {trailValidationErr && <p className='trail-validation-err'>{trailValidationErr}</p>}
+      {dateValidationErr && <p className='date-validation-err'>{dateValidationErr}</p>}
     </form>
   );
 }

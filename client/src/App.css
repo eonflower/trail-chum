@@ -254,7 +254,7 @@ body {
   color: #f2ed65;
 }
 
-.logout-btn {
+.logout-btn, .account-link {
   background: none;
   border: none;
   font-weight: 600;
@@ -287,7 +287,7 @@ a.footer-link:hover {
 
 /* Pages */
 
-.logs-page, .trail-page, .trail-notes-page, .post-page, .solo-page, .account-page {
+.logs-page, .trail-page, .trail-logs-page, .post-page, .solo-page, .account-page {
   background-image: url("./assets/peaks.svg");
   background-size: cover;
   min-height: 100vh;
@@ -465,6 +465,13 @@ textarea.notes-textarea {
   z-index: -1;
 }
 
+.trail-validation-err, .date-validation-err {
+  display: flex;
+  justify-content: end;
+  padding: .5em 0;
+  color: #a55902;
+}
+
 .auth-btn:after {
   background-image: linear-gradient(92.83deg, #dee60b80 0, #bfea7f87 100%);
 }
@@ -615,6 +622,10 @@ input.trail-name {
   justify-content: space-between;
 }
 
+.trail-container > a {
+  display: flex;
+  width: 90%;
+}
 
 .trail-delete {
   cursor: pointer;
@@ -629,9 +640,9 @@ input.trail-name {
   color: #a55902;
 }
 
-/* Trail Notes Page */
+/* Trail logs Page */
 
-.trail-notes-title {
+.trail-logs-title {
   display: flex;
   justify-content: center;
   text-transform: capitalize;
@@ -640,7 +651,7 @@ input.trail-name {
 }
 
 
-/* Solo Note Page */
+/* Solo log Page */
 
 .back-button {
   position: absolute;
@@ -656,7 +667,7 @@ input.trail-name {
   position: relative;
 }
 
-.solo-note {
+.solo-log {
   position: relative;
   margin: 1rem auto;
   padding: 1rem;
@@ -672,10 +683,20 @@ input.trail-name {
   padding-bottom: 1rem;
 }
 
+.log-trail-solo {
+  text-transform: capitalize;
+}
+
 .solo-span {
   display: flex;
   justify-content: center;
   gap: 1rem;
+}
+
+.log-span {
+  width: 22%;
+  display: flex;
+  justify-content: center;
 }
 
 .log-location {
@@ -797,9 +818,9 @@ input.trail-name {
   .nav-toggle {font-size: 1.8rem; left: .7rem;}
   .navbar.open {left: .7rem; padding: .5rem .8rem;}
   .nav-links {font-size: .8rem;}
-  .solo-title, .trail-notes-title {font-size: 1.3rem;}
+  .solo-title, .trail-logs-title {font-size: 1.3rem;}
   .home-page {padding: 2rem .7rem;}
-  .trail-notes-page, .trail-page, .solo-page, .logs-page {padding: 1rem .7rem}
+  .trail-logs-page, .trail-page, .solo-page, .logs-page {padding: 1rem .7rem}
   p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .back-button, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description, a.footer-link {font-size: .9rem;}
   .back-button {padding: .3rem .5rem}
   .log-start-end {font-size: .9rem;}
@@ -834,7 +855,7 @@ input.trail-name {
   label {font-size: .85rem;}
   .log-title {font-size: 1rem;}
   .post-title {font-size: 1.5rem;}
-  .solo-title, .trail-notes-title {font-size: 1.3rem;}
+  .solo-title, .trail-logs-title {font-size: 1.3rem;}
   p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .back-button, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description, a.footer-link  {font-size: .8rem;}
   .log-start-end {font-size: .85rem;}
   .log-edit, .log-delete {font-size: .6rem; padding: 6px 11px}
@@ -845,7 +866,7 @@ input.trail-name {
   .trail-container {padding: .8rem;}
   label {font-size: .75rem;}
   .log-title {font-size: .9rem;}
-  .solo-title, .trail-notes-title {font-size: 1rem;}
+  .solo-title, .trail-logs-title {font-size: 1rem;}
   p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description, a.footer-link  {font-size: .7rem;}
   .log-start-end {font-size: .85rem;}
   .log-edit, .log-delete {font-size: .5rem; padding: 4px 9px}
@@ -868,7 +889,7 @@ input.trail-name {
   .post-container {margin-bottom: 3rem;}
   label, input, select {font-size: .6rem;}
   .log-title {font-size: .8rem;}
-  .solo-title, .trail-notes-title {font-size: .8rem;}
+  .solo-title, .trail-logs-title {font-size: .8rem;}
   p.bullet, .log-day, .log-mileage, .log-trail, .log-direction, .log-day-solo, .log-mileage-solo, .log-trail-solo, .log-direction-solo, .log-description  {font-size: .6rem;}
   .log-start-end, a.footer-link {font-size: .6rem;}
   .trail-form {width: 280px; margin: auto;}

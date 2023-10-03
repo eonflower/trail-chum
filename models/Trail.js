@@ -11,9 +11,9 @@ const trailSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	notes: [{
+	logs: [{
 		type: Schema.Types.ObjectId,
-		ref: "Note"}
+		ref: "Log"}
 	],
 	
 })

@@ -1,33 +1,33 @@
-
 import React, { useContext, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserProvider';
-import FullNote from '../components/notes/FullNote';
+import IndividualLog from '../components/logs/IndividualLog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { format, addDays } from 'date-fns';
 
-export default function SoloLog() {
+const SoloLog = () => {
   const { id } = useParams();
 	const navigate = useNavigate();
-  const { getSoloNote, notes } = useContext(UserContext);
+  const { getSoloLog, logs } = useContext(UserContext);
 
   useEffect(() => {
-    getSoloNote(id);
+    getSoloLog(id);
+    // console.log(logs);
   }, [id]);
 
-  // Find the note with the matching id from the notes array
-  const note = notes.find((note) => note._id === id);
+  // Find the Log with the matching id from the Logs array
+  const soloLog = logs?.find((log) => log._id === id);
 
 	const handleBack = () => {
     navigate(-1); // Takes the user back to the previous page
   };
 
-	if (!note) {
-    return <p>loading... </p>; // Render a loading message if note is undefined
+	if (!soloLog) {
+    return <p>loading... </p>; // Render a loading message if Log is undefined
   }
 
-  const correctDate = addDays(new Date(note.date), 1)
+  const correctDate = addDays(new Date(soloLog?.date), 1)
 
 	const formattedDate = format(new Date(correctDate), 'MMMM do, yyyy')
 
@@ -40,20 +40,22 @@ export default function SoloLog() {
       </button>
 
       <div className='solo-container'>
-        <h2 className='solo-title'>Day {note.dayNumber} | {formattedDate}</h2>
-        <div className='solo-note'>
-          <FullNote
-            key={note._id}
-            trail={note.trail}
-            trailName={note.trailName}
-            description={note.description}
-            dayNumber={note.dayNumber}
-            date={note.date}
-            trailDirection={note.trailDirection}
-            startMileMark={note.startMileMark}
-            endMileMark={note.endMileMark}
-            startLocation={note.startLocation}
-            endLocation={note.endLocation}
+        <h2 className='solo-title'>
+          {soloLog?.dayNumber === null ? "" :`Day ${soloLog.dayNumber} | `}{formattedDate}
+        </h2>
+        <div className='solo-log'>
+          <IndividualLog
+            key={soloLog._id}
+            trail={soloLog.trail}
+            trailName={soloLog.trailName}
+            description={soloLog.description}
+            dayNumber={soloLog.dayNumber}
+            date={soloLog.date}
+            trailDirection={soloLog.trailDirection}
+            startMileMark={soloLog.startMileMark}
+            endMileMark={soloLog.endMileMark}
+            startLocation={soloLog.startLocation}
+            endLocation={soloLog.endLocation}
           />
         </div>
       </div>
@@ -61,8 +63,6 @@ export default function SoloLog() {
   );
 }
 
-
-
-
+export default SoloLog;
 
 

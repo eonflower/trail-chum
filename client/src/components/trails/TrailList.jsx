@@ -8,8 +8,7 @@ export default function TrailList() {
 
   return (
     <div className='log-list'>
-      {trails?.map((trail, index) => (
-        <Link key={trail._id} to={`/trails/${trail._id}/notes`}>
+      {trails && trails?.map((trail, index) => (
           <Trail
             id={trail._id}
             key={trail._id}
@@ -18,7 +17,6 @@ export default function TrailList() {
             isLast={index === trails.length - 1}
             deleteTrail={deleteTrail}
           />
-        </Link>
       ))}
     </div>
   );

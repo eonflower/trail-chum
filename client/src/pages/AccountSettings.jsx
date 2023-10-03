@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import SettingsForm from '../components/SettingsForm'
+import SettingsForm from '../components/forms/SettingsForm'
 import { UserContext } from '../context/UserProvider'
 
 

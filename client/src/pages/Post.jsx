@@ -1,16 +1,19 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import NoteForm from '../components/notes/NoteForm'
+import NoteForm from '../components/forms/LogForm'
 import { UserContext } from '../context/UserProvider'
 import logImg from "../assets/log.png"
 
 
 export default function Post() {
-	const { addNote, trails, getAllTrails } = useContext(UserContext)
+	const { addNote, trails, getAllTrails, errMsg } = useContext(UserContext)
+	const [validationErr, setValidationErr] = useState(errMsg)
+	
 
 	useEffect(() => {
+		setValidationErr(errMsg)
 		getAllTrails()
-	}, [])
+	}, [errMsg])
 	
 	return (
 		<div className='post-page'>
@@ -25,7 +28,7 @@ export default function Post() {
 						<div className='post-container'>
 						<h1 className='post-title'>daily log</h1>
 						<div className='post-form-container'>
-            <NoteForm addNote={addNote} trails={trails} />
+            <NoteForm addNote={addNote} trails={trails} errMsg={errMsg}/>
 						</div>
 						</div>
           )}

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import AuthForm from '../components/AuthForm'
+import AuthForm from '../components/forms/AuthForm'
 import { UserContext } from '../context/UserProvider'
 import logo from "../assets/trail-logo-brown.png"
 import About from '../components/About'

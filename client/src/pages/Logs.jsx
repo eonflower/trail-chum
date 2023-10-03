@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {useNavigate, Link} from "react-router-dom"
-import NoteList from '../components/notes/NoteList'
+import FullLogList from '../components/logs/FullLogList'
 import { UserContext } from '../context/UserProvider'
 import logsImg from '../assets/logbook.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,13 +8,13 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 
 
-export default function Logs() {
-  const { notes, getAllNotes, getAllTrails, addTrail, trails, getTrailNotes } = useContext(UserContext);
+const Logs = () => {
+  const { logs, getAllLogs, getAllTrails, addTrail, trails, getTrailLogs } = useContext(UserContext);
   const [selectedTrail, setSelectedTrail] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAllNotes()
+    getAllLogs()
     getAllTrails()
   }, []);
 
@@ -23,9 +23,9 @@ export default function Logs() {
     setSelectedTrail(trailId);
 
     if (trailId) {
-      getTrailNotes(trailId);
+      getTrailLogs(trailId);
     } else {
-      getAllNotes();
+      getAllLogs();
     }
   };
 
@@ -33,7 +33,7 @@ export default function Logs() {
     navigate(-1); // Takes the user back to the previous page
   };
 
-  const logs =
+  const logList =
   <>
   <select 
 					value={selectedTrail} 
@@ -46,7 +46,7 @@ export default function Logs() {
             </option>
           ))}
         </select>
-        <NoteList notes={notes} selectedTrailId={selectedTrail} /></>
+        <FullLogList logs={logs} selectedTrailId={selectedTrail} /></>
 
   return (
     <div className='logs-page'>
@@ -54,7 +54,7 @@ export default function Logs() {
         <FontAwesomeIcon icon={faArrowLeft} />
       </button>
       <div className='logs-container'>
-        {notes?.length === 0 ?
+        {logs?.length === 0 ?
         <>
         <img className="notice-img" src={logsImg} alt='redirect message that says you have no logs'/>
         {trails?.length === 0 ?
@@ -67,11 +67,11 @@ export default function Logs() {
         </Link>}
         </>
         :
-        <>{logs}</>}
+        <>{logList}</>}
       </div>
     </div>
   );
 }
 
 
-
+export default Logs;

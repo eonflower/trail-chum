@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import { Routes, Route, Navigate} from 'react-router-dom'
 import { UserContext } from './context/UserProvider'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -8,7 +8,7 @@ import Logs from './pages/Logs'
 import Post from './pages/Post'
 import Nav from './components/NavBar'
 import Trails from './pages/Trails'
-import TrailNotes from './pages/TrailNotes'
+import TrailLogs from './pages/TrailLogs'
 
 import './App.css'
 import SoloLog from './pages/SoloLog'
@@ -60,15 +60,15 @@ function App() {
           }
         />
         <Route
-          path='/trails/:id/notes'
+          path='/trails/:id/logs'
           element={
             <ProtectedRoute token={token} redirectTo='/'>
-              <TrailNotes />
+              <TrailLogs />
             </ProtectedRoute>
           }
         />
         <Route
-          path='/notes/:id/'
+          path='/logs/:id/'
           element={
             <ProtectedRoute token={token} redirectTo='/'>
               <SoloLog />

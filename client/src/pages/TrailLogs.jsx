@@ -4,26 +4,26 @@ import { UserContext } from '../context/UserProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logImg from "../assets/logs.png"
 
-import Note from '../components/notes/Note';
+import Log from '../components/logs/ListedLogItem';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-export default function TrailNotes(props) {
-  const { notes, getTrailNotes, selectedTrailId, trails } = useContext(UserContext);
+const TrailLogs = (props) => {
+  const { logs, getTrailLogs, selectedTrailId, trails } = useContext(UserContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const [trailName, setTrailName] = useState('');
 
   useEffect(() => {
-		getTrailNotes(id)
+		getTrailLogs(id)
 	}, [id])
 
-  const filteredNotes = selectedTrailId
-    ? notes.filter((note) => note.trail === selectedTrailId)
-    : notes;
+  const filteredLogs = selectedTrailId
+    ? logs.filter((log) => log.trail === selectedTrailId)
+    : logs;
 
-		const sortedNotes = filteredNotes?.sort((a, b) => a.dayNumber - b.dayNumber);
+		const sortedLogs = filteredLogs?.sort((a, b) => a.dayNumber - b.dayNumber);
 
-  // Filter notes based on the selected trail id
+  // Filter Logs based on the selected trail id
   useEffect(() => {
     const trail = trails.find((trail) => trail._id === id);
     if (trail) {
@@ -37,20 +37,20 @@ export default function TrailNotes(props) {
   };
 
   const logList =
-  sortedNotes?.map((note, index) => (
-    <Link key={note._id} to={`/notes/${note._id}`} className='note-link'>
-    <Note
-      key={note._id}
-      trail={note.trail}
-      trailName={note.trailName}
-      trailDirection={note.trailDirection}
-      description={note.description}
-      dayNumber={note.dayNumber}
-      date={note.date}
-      startMileMark={note.startMileMark}
-      endMileMark={note.endMileMark}
+  sortedLogs?.map((log, index) => (
+    <Link key={log._id} to={`/logs/${log._id}`} className='log-link'>
+    <Log
+      key={log._id}
+      trail={log.trail}
+      trailName={log.trailName}
+      trailDirection={log.trailDirection}
+      description={log.description}
+      dayNumber={log.dayNumber}
+      date={log.date}
+      startMileMark={log.startMileMark}
+      endMileMark={log.endMileMark}
       isFirst={index === 0}
-      isLast={index === notes.length - 1}
+      isLast={index === logs.length - 1}
     />
     </Link>
   ))
@@ -58,13 +58,13 @@ export default function TrailNotes(props) {
 
 
   return (
-    <div className='trail-notes-page'>
+    <div className='trail-logs-page'>
       <button onClick={handleBack} className='back-button'>
         <FontAwesomeIcon icon={faArrowLeft} />
       </button>
-      <div className='trail-notes-container'>
+      <div className='trail-logs-container'>
       
-      {notes?.length === 0 ?
+      {logs?.length === 0 ?
       <>
       <img className="notice-img" src={logImg} alt="" />
       <Link className='add-log-btn' to="/post">
@@ -73,9 +73,11 @@ export default function TrailNotes(props) {
         </>
       :
       <>
-      <h2 className='trail-notes-title'>{trailName} Logs</h2>
+      <h2 className='trail-logs-title'>{trailName} Logs</h2>
       <div className='log-list'>{logList}</div></>}
     </div>
     </div>
   );
 }
+
+export default TrailLogs

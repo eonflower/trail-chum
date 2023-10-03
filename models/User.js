@@ -30,6 +30,10 @@ const userSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Trail",
 	}],
+	logs: [{
+		type: Schema.Types.ObjectId,
+		ref: "Log",
+	}],
 	
 })
 

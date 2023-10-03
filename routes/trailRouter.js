@@ -1,7 +1,7 @@
 const express = require("express");
 const trailRouter = express.Router();
 const Trail = require("../models/Trail");
-const Note = require("../models/Note")
+const Log = require("../models/Log")
 const User = require("../models/User")
 
 // Get All Trails
@@ -30,14 +30,14 @@ trailRouter.get('/:id', (req, res, next) => {
   });
 });
 
-// Get Trail Notes by trail id
-trailRouter.get("/:id/notes", async (req, res, next) => {
+// Get Trail logs by trail id
+trailRouter.get("/:id/logs", async (req, res, next) => {
   try {
-    const trailNotes = await Trail.findById(req.params.id).populate("notes");
-    if (!trailNotes) {
+    const trailLogs = await Trail.findById(req.params.id).populate("logs");
+    if (!trailLogs) {
       return res.status(404).send("Trail not found");
     }
-    return res.status(200).send(trailNotes.notes);
+    return res.status(200).send(trailLogs.logs);
   } catch (err) {
     res.status(500);
     return next(err);
@@ -94,8 +94,8 @@ trailRouter.delete("/:id", async (req, res, next) => {
   try {
     const trailId = req.params.id;
 
-    // Delete all notes attached to the trail
-    await Note.deleteMany({ trail: trailId });
+    // Delete all logs attached to the trail
+    await Log.deleteMany({ trail: trailId });
 
     // Delete the trail
     const deletedTrail = await Trail.findByIdAndDelete(trailId);

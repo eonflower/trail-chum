@@ -2,7 +2,7 @@ const express = require('express')
 const authRouter = express.Router()
 const User = require('../models/User')
 const jwt = require('jsonwebtoken');
-const Note = require('../models/Note')
+const Note = require('../models/Log')
 const Trail = require('../models/Trail')
 
 
@@ -51,10 +51,15 @@ authRouter.post("/signup", (req, res, next) => {
       }
     });
 
-  // Check if the username and password have a minimum of 8 characters
-  if (username.length < 8 || password.length < 8) {
+  // Check if the username and password have a minimum of 4 or 8 characters
+  if (username.length <= 4) {
     res.status(400);
-    return next(new Error("Username and password must be at least 8 characters long"));
+    return next(new Error("Username must be at least 4 characters long"));
+  }
+
+  if (password.length <= 8) {
+    res.status(400);
+    return next(new Error("Password must be at least 8 characters long"));
   }
 
 		const newUser = new User({ username: username.toLowerCase(), password, email: email.toLowerCase() });

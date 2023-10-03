@@ -43,7 +43,7 @@ export default function NavBar(props) {
         <Link to="/trails" className='nav-links'>Trails</Link>
         <Link to="/logs" className='nav-links'>Logs</Link>
         <Link to="/post" className='nav-links'>Add Log</Link>
-        <Link to="/account" className='nav-links'>Account</Link>
+        <Link to="/account" className='account-link nav-links'>Account</Link>
         <button className='logout-btn nav-links' onClick={logout}>logout</button>
       </div>
     </div>

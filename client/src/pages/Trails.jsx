@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserProvider'
 import TrailList from '../components/trails/TrailList'
-import TrailForm from '../components/trails/TrailForm'
+import TrailForm from '../components/forms/TrailForm'
 import trailImg from "../assets/trails.png"
 
 export default function Trails() {
