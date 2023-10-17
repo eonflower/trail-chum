@@ -42,12 +42,12 @@ authRouter.post("/signup", async (req, res, next) => {
     }
 
     // Check if the username and password have a minimum of 4 or 8 characters
-    if (username.length <= 4) {
+    if (username.length < 4) {
       res.status(400);
       return next(new Error("Username must be at least 4 characters long"));
     }
 
-    if (password.length <= 8) {
+    if (password.length < 8) {
       res.status(400);
       return next(new Error("Password must be at least 8 characters long"));
     }
