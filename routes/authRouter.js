@@ -8,7 +8,7 @@ const Trail = require('../models/Trail')
 
 // signup
 
-authRouter.post("/signup", (req, res, next) => {
+authRouter.post("/signup", async (req, res, next) => {
   const { username, password, email } = req.body;
 
   // Function to check if inputs are empty
@@ -22,69 +22,134 @@ authRouter.post("/signup", (req, res, next) => {
     // Call the function to check inputs
     checkInputs();
 
+    // Check if the username contains only letters and numbers
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    if (!usernameRegex.test(username)) {
+      res.status(400);
+      return next(new Error("Username can only contain letters and numbers"));
+    }
 
-  // Check if the username contains only letters and numbers
-  const usernameRegex = /^[a-zA-Z0-9]+$/;
-  if (!usernameRegex.test(username)) {
-    res.status(400);
-    return next(new Error("Username can only contain letters and numbers"));
-  }
+    const existingUser = await User.findOne({ username: username.toLowerCase() });
+    if (existingUser) {
+      res.status(403);
+      return next(new Error("That username is already taken"));
+    }
 
-  User.findOne({username : req.body.username.toLowerCase() }, (err, user) => {
-		if(err) {
-			res.status(500)
-			return next(err)
-		}
-		if(user) {
-			res.status(403)
-			return next(new Error("That username is already taken"))
-		}
+    const existingEmail = await User.findOne({ email: email.toLowerCase() });
+    if (existingEmail) {
+      res.status(403);
+      return next(new Error("That email is already taken"));
+    }
 
-    User.findOne({ email: req.body.email.toLowerCase() }, (err, user) => {
-      if (err) {
-        res.status(500);
-        return next(err);
-      }
-      if (user) {
-        res.status(403);
-        return next(new Error("That email is already taken"));
-      }
+    // Check if the username and password have a minimum of 4 or 8 characters
+    if (username.length <= 4) {
+      res.status(400);
+      return next(new Error("Username must be at least 4 characters long"));
+    }
+
+    if (password.length <= 8) {
+      res.status(400);
+      return next(new Error("Password must be at least 8 characters long"));
+    }
+
+    const newUser = new User({
+      username: username.toLowerCase(),
+      password,
+      email: email.toLowerCase(),
     });
 
-  // Check if the username and password have a minimum of 4 or 8 characters
-  if (username.length <= 4) {
+    await newUser.save();
+
+    const token = jwt.sign(newUser.withoutPassword(), process.env.SECRET);
+    if (!token) {
+      res.status(500);
+      return next(new Error("Token generation failed"));
+    }
+
+    return res.status(201).send({ token, user: newUser.withoutPassword() });
+  } catch (error) {
     res.status(400);
-    return next(new Error("Username must be at least 4 characters long"));
+    return next(error);
   }
-
-  if (password.length <= 8) {
-    res.status(400);
-    return next(new Error("Password must be at least 8 characters long"));
-  }
-
-		const newUser = new User({ username: username.toLowerCase(), password, email: email.toLowerCase() });
-
-    newUser.save((err, savedUser) => {
-      if (err) {
-        res.status(500);
-        return next(err);
-      }
-
-			const token = jwt.sign(savedUser.withoutPassword(), process.env.SECRET);
-      if (!token) {
-        res.status(500);
-        return next(new Error("Token generation failed"));
-			}
-
-			return res.status(201).send({token, user: savedUser.withoutPassword()})
-		})
-	})
-
-} catch (error) {
-  res.status(400);
-  return next(error);
-}
 });
+
+// authRouter.post("/signup", (req, res, next) => {
+//   const { username, password, email } = req.body;
+
+//   // Function to check if inputs are empty
+//   const checkInputs = () => {
+//     if (!username || !password || !email) {
+//       throw new Error("Please fill in all input fields");
+//     }
+//   };
+
+//   try {
+//     // Call the function to check inputs
+//     checkInputs();
+
+
+//   // Check if the username contains only letters and numbers
+//   const usernameRegex = /^[a-zA-Z0-9]+$/;
+//   if (!usernameRegex.test(username)) {
+//     res.status(400);
+//     return next(new Error("Username can only contain letters and numbers"));
+//   }
+
+//   User.findOne({username : req.body.username.toLowerCase() }, (err, user) => {
+// 		if(err) {
+// 			res.status(500)
+// 			return next(err)
+// 		}
+// 		if(user) {
+// 			res.status(403)
+// 			return next(new Error("That username is already taken"))
+// 		}
+
+//     User.findOne({ email: req.body.email.toLowerCase() }, (err, user) => {
+//       if (err) {
+//         res.status(500);
+//         return next(err);
+//       }
+//       if (user) {
+//         res.status(403);
+//         return next(new Error("That email is already taken"));
+//       }
+//     });
+
+//   // Check if the username and password have a minimum of 4 or 8 characters
+//   if (username.length <= 4) {
+//     res.status(400);
+//     return next(new Error("Username must be at least 4 characters long"));
+//   }
+
+//   if (password.length <= 8) {
+//     res.status(400);
+//     return next(new Error("Password must be at least 8 characters long"));
+//   }
+
+// 		const newUser = new User({ username: username.toLowerCase(), password, email: email.toLowerCase() });
+
+//     newUser.save((err, savedUser) => {
+//       if (err) {
+//         res.status(500);
+//         return next(err);
+//       }
+
+// 			const token = jwt.sign(savedUser.withoutPassword(), process.env.SECRET);
+//       if (!token) {
+//         res.status(500);
+//         return next(new Error("Token generation failed"));
+// 			}
+
+// 			return res.status(201).send({token, user: savedUser.withoutPassword()})
+// 		})
+// 	})
+
+// } catch (error) {
+//   res.status(400);
+//   return next(error);
+// }
+// });
 
 
 
